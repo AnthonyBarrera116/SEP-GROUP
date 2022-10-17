@@ -1,8 +1,9 @@
-require('dotenv').config(); // get the env variables
+require('dotenv').config({ path: '../.env' }); // get the env variables
 const mongoose = require('mongoose');
 
 exports.connect = function(test){
   let uri = process.env.DB_URI; //production DB
+  console.log("Uri is: " + String(uri));
   if(test === 1)
   {
     console.log('Confirmed testing.');
