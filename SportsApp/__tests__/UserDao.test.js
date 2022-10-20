@@ -44,7 +44,6 @@ test('Delete User', async function()
 
 test('Delete All Users', async function()
 {
-    let users = await dao.readAll();
     let newUser = {};
     newUser.UserName = "Nick";
     newUser.Password = "password";

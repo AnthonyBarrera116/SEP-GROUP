@@ -40,7 +40,6 @@ test('Delete team', async function()
 
 test('Delete All teams', async function()
 {
-    let teams = await dao.readAll();
     let newteam = {};
     newteam.TeamName = "The Programmers";
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
