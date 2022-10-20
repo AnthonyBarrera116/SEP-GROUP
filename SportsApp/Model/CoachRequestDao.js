@@ -6,7 +6,7 @@ const coachRequestSchema = new mongoose.Schema({
  TeamID: String,
  Reason: String,
  },
- { collection : 'coachRequests' });
+ { collection : 'Coach Requests' });
 
  const coachRequestModel = mongoose.model('coachRequest', coachRequestSchema);
 
