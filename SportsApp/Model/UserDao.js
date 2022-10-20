@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
  UserName: String,
- UserType: String,
+ Password: String,
+ UserType: Number, //0-Player, 1-Coach, 2-Admin
+ TeamID: String,
+ Likes: [String],
  },
  { collection : 'Users' });
 
@@ -38,6 +41,6 @@ exports.deleteAll = async function(){
 exports.update = async function(user)
 {
     let id = { _id: user._id };
-    let updates = { $set: {UserName: user.UserName, UserType: user.UserType}};
+    let updates = { $set: {UserName: user.UserName, Password: user.Password, UserType: user.UserType, TeamID: user.TeamID, Likes: user.Likes}};
     await userModel.updateOne(id, updates);
 }
