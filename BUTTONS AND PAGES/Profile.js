@@ -8,15 +8,17 @@ import NotificationsBox from './NotificationsBox';
 
 
 
-export default function Profile(){
+export default function Profile(navigation){
 
 
   return (<>   
+
+   
+
       <View style = {{marginTop:20,alignItems: 'center',flex:1}}>
          
         <Text>name</Text>
       
-         
          <View>
          <Image source={{uri: 'https://cdn4.iconfinder.com/data/icons/symbols-vol-1-1/40/user-person-single-id-account-player-male-female-512.png'}}
             style={{width: 100, height: 100}} />
@@ -42,9 +44,7 @@ export default function Profile(){
                
          <View style = {{marginTop:-530,flexDirection:'row'}}>
 
-            <MenuButtons>
-
-            </MenuButtons>
+            <MenuButtons items = {navigate}>
             
          </View>
    

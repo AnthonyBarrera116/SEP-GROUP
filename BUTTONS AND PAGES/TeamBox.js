@@ -2,10 +2,11 @@ import React from "react";
 
 import {Text,StyleSheet ,View}    from "react-native";
 
+import TeamFind from "./TeamFind";
 
-export default function NotificationsBox(){
 
-
+export default function TeamBox(){
+const name = TeamFind("YES");
    const styles = StyleSheet.create({
  
     RectangleShapeView1: {
@@ -14,7 +15,7 @@ export default function NotificationsBox(){
         width: 65 * 2,
         height: 40,
         left:80,
-        backgroundColor: '#000000'
+        backgroundColor: '#000000',
        
         
         
@@ -23,14 +24,28 @@ export default function NotificationsBox(){
      
     });
 
-  return (<>   
 
-        <View style={styles.RectangleShapeView1}>
+    if (name !== 'null') {
+        return (<>   
 
-        </View>
+
+            <View style={{alignItems:"center",left:-100}}>
+
+                <View style={styles.RectangleShapeView1}>
+                
+                <Text style = {{textAlign:'center'}}> 
+                    {name}
+                </Text>
             
-    </>
+                </View>
+            
+            </View>
+              
+        </>);
+  }
 
-    );
+ 
+
+  
    
 }

@@ -2,15 +2,11 @@ import React from "react";
 import { Text, TextInput, TouchableOpacity, View }    from "react-native";
 
 import FormStyle from "./ButtonProfileStyle";
-import TeamBox from './TeamBox';
+
 
 //import Profile from "./Profile.js";
 
 export default function CoachProfileButtons(){
-
-  const [email, setEmail] = React.useState("");
-  const [pwd, setPwd] = React.useState("");
-
 
  function LeaveTeam(){// inner function
       //const obj = {login:em,password:pass};
@@ -56,16 +52,9 @@ export default function CoachProfileButtons(){
 
   return (<>   
 
-    <View>
-  
-        <TeamBox>
 
-        </TeamBox>
-
-    </View>
-
-
-    <View style = {{marginTop:30,flex:1,flexDirection:'row',left:10}}>
+    
+      <View style = {{marginTop:30,flex:1,flexDirection:'row',left:103}}>
         
         <View style={FormStyle.button}>
         </View>
@@ -89,7 +78,7 @@ export default function CoachProfileButtons(){
 
     </View>
 
-    <View style = {{marginTop:120,flex:1,flexDirection:'row',right:130}}>
+    <View style = {{marginTop:120,flex:1,flexDirection:'row',right:103}}>
 
         <View style={FormStyle.button}>
         </View>

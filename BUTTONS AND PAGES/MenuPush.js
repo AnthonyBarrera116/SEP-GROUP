@@ -49,7 +49,7 @@ export default function MenuButtons({navigation}){
                   
               <View style={{flex:2}}>
               <TouchableOpacity style={FormStyle.formButton}             
-                onPress={() => navigation.navigate('SecondPage')}>
+                onPress={() => navigation.push('SecondPage')}>
               <Text style={FormStyle.formButtonText}>Profile</Text>
               </TouchableOpacity>
               </View>

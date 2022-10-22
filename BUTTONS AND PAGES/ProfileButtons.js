@@ -3,13 +3,10 @@ import { Text, TextInput, TouchableOpacity, View }    from "react-native";
 
 import FormStyle from "./ButtonProfileStyle";
 
+
 //import Profile from "./Profile.js";
 
 export default function ProfileButtons(){
-
-  const [email, setEmail] = React.useState("");
-  const [pwd, setPwd] = React.useState("");
-
 
  function LeaveTeam(){// inner function
       //const obj = {login:em,password:pass};
@@ -97,7 +94,7 @@ export default function ProfileButtons(){
         <View style={{flex:2,left: 60}}>
         <TouchableOpacity style={FormStyle.formButton}             
             onPress={() => Delete() }>
-        <Text style={FormStyle.formButtonText}>Delete</Text>
+        <Text style={FormStyle.formButtonText}>Delete Account</Text>
         </TouchableOpacity>
         </View>
 

@@ -14,4 +14,7 @@ export default StyleSheet.create({
         color:'#fff',textAlign:'center',fontSize:15,  
         paddingLeft: 10,paddingRight:10},
     });
+
+
+
     
