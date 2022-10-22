@@ -1,69 +1,75 @@
-import {React,Component} from "react";
+// Imports React form react
+import React from "react";
 
-import { Text, TextInput, TouchableOpacity,StyleSheet ,View, Image}    from "react-native";
+// Imports View, Text and Image
+import { Text,View, Image}    from "react-native";
 
-import MenuPush from './MenuPush';
+// Imports Team Box, Notfications and Coach Buttons to Coach Profile Screen
 import CoachProfileButtons from './CoachProfileButtons';
 import NotificationsBox from './NotificationsBox';
 import TeamBox from './TeamBox';
 
 
+// Coach Profile Organized function
+export default function CoachProfile(){
 
-export default function Coach({navigation}){
+   // returns organized buttons andstyle for coach Profile
+   return (<>   
+      <View style = {{marginTop:20,alignItems: 'center',flex:1}}>
+               
+         <Text>
+            
+            name
 
-      return (<>   
-            <View style = {{marginTop:20,alignItems: 'center',flex:1}}>
-               
-               <Text>name</Text>
+         </Text>
             
-               <View>
-               <Image source={{uri: 'https://cdn4.iconfinder.com/data/icons/symbols-vol-1-1/40/user-person-single-id-account-player-male-female-512.png'}}
-                  style={{width: 100, height: 100}} />
+         <View>
+
+            <Image source={{uri: 'https://cdn4.iconfinder.com/data/icons/symbols-vol-1-1/40/user-person-single-id-account-player-male-female-512.png'}} style={{width: 100, height: 100}} />
                   
-               </View>
-      
-               <View style = {{flexDirection:'column',alignItems:'center'}}>
-                  
-                  <View style = {{marginRight:120}}>
-      
-                     <TeamBox>
-      
-                     </TeamBox>
-      
-                  </View>
-                  
-            
-                  <View style = {{marginTop:-60,flexDirection:'row'}}>
-      
-                     <CoachProfileButtons>
-      
-                     </CoachProfileButtons>
-      
-                  </View>
-      
-               </View>
-            
-      
-               <View style = {{marginTop:-100}}>
-      
-                  <NotificationsBox>
-      
-                  </NotificationsBox>
-      
-               </View>
-               
-                     
-               <View style = {{marginTop:-530,flexDirection:'row'}}>
-      
-                  <MenuPush>
-      
-                  </MenuPush>
-                  
-               </View>
-         
          </View>
-         </>
+      
+         <View style = {{flexDirection:'column',alignItems:'center'}}>
+                  
+            <View style = {{marginRight:120}}>
+      
+               <TeamBox>
+      
+               </TeamBox>
+                     
+            </View>
+                  
+            
+            <View style = {{marginTop:-60,flexDirection:'row'}}>
+      
+               <CoachProfileButtons>
+      
+               </CoachProfileButtons>
+      
+            </View>
+      
+         </View>
+            
+      
+         <View style = {{marginTop:-100}}>
+      
+            <NotificationsBox>
+      
+            </NotificationsBox>
+      
+         </View>
 
-      );
+         <View style = {{marginTop:-530,flexDirection:'row'}}>
+
+            <MenuButtons>
+
+            </MenuButtons>
+
+         </View>
+         
+               
+      </View>
+        
+   </>);
       
 }

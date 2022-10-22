@@ -1,57 +1,122 @@
-import {React,Component} from "react";
-import { Text, TextInput, TouchableOpacity, View }    from "react-native";
+// Imports React
+import React from "react";
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// Import Features from React-Native
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
-import FormStyle from "./ButtonStyle.js";
+// Import Style of Where eveything goes
+import MainStyle from "./MainStyle.style";
 
+// Import FormStyle for Sign In buttons and log in
+import FormStyle from "./FormStyle";
 
-export default function SignIn({navigation}){
+// Testing of logging in 
+const e = 'ajbarr116@gmail.com';
+const pass ='1234';
+const co = 0;
+const team = 0;
 
-    return (
+// Function For Logging In
+export default function LoginScreen({navigation}){
 
-      <View style = {{marginTop:0,flex:1,flexDirection:'column'}}>
-        
-        <View style={FormStyle.button}>
-        </View>
-          
-          <View style={{flex:2}}>
-          <TouchableOpacity style={FormStyle.formButton}             
-              onPress={() =>   navigation.navigate('ForthPage') }>
-          <Text style={FormStyle.formButtonText}>Coach</Text>
-          </TouchableOpacity>
-          </View>
+  // Const Variable for email
+  const [email, setEmail] = React.useState("");
 
-          <View style={FormStyle.button}>
-          </View>
-          
-          <View style={{flex:2}}>
-          <TouchableOpacity style={FormStyle.formButton}             
-            onPress={() => navigation.navigate('FifthPage') }>
-          <Text style={FormStyle.formButtonText}>Without Team</Text>
-          </TouchableOpacity>
-          </View>
+  // Const variable for Password
+  const [password, setPassword] = React.useState("");
 
-          <View style={FormStyle.button}>
-          </View>
-              
-          <View style={{flex:2}}>
-          <TouchableOpacity style={FormStyle.formButton}             
-              onPress={() =>  navigation.navigate('ThirdPage') }>
-              <Text style={FormStyle.formButtonText}>With Team</Text>
-          </TouchableOpacity>
-          </View>
-
-      </View>
-    
+    // Function for handling checking user and password 
+    function handleSubmit(pEmail, pPwd){
       
+      // If email is correct
+      if(e === pEmail){
 
+        // If Password is correct
+        if(pass === pPwd){
 
-    );
+          // If coach
+          if(co === 1){
+              
+            // Navigate Profile style (DOESN'T WORK)
+            navigation.navigate('CoachProfile') 
 
-  
-  
+          }
 
+          // If they are on a Team
+          else if(team === 1){
+
+            // Navigate Profile style with team (DOESN'T WORK)
+            navigation.navigate('ProfileWithTeam') 
+
+          }
+
+          // Else standard Profile with no team
+          else{
+
+              
+            // Navigate Profile style without team (DOESN'T WORK)
+            navigation.navigate('ProfileWithoutTeam') 
+
+          }
+
+        }
+        
+        // Incorrect Password
+        else{
+
+          // Alert for wrong Password
+          alert('INCORRECT PASSWORD')
+
+        }
+
+      }
+
+      // Incorrect Email
+      else{
+
+        // Alert for wrong Password
+        alert('INCORRECT EMAIL')
+
+      }
+    
+    }
+
+    // Buttons and style returned for Sign In
+    return (<>
+      
+      <View>
+
+        <View style={FormStyle.groupView}>
+            
+            <Text style={MainStyle.emphasisText}> Login </Text>
+
+        </View>
+
+        <View style={FormStyle.groupView}>
+
+          <Text style={FormStyle.label}>Email:</Text>
+            
+          <TextInput onChangeText={setEmail} style={FormStyle.input} autoCapitalize={false} />
+
+          <Text style={FormStyle.label}>Password:</Text>
+
+          <TextInput onChangeText={setPassword} style={FormStyle.input} secureTextEntry={true} />
+
+          <TouchableOpacity style={FormStyle.formButton} onPress={()=> handleSubmit(email,password)}>
+
+          <Text style={FormStyle.formButtonText}> Submit </Text>
+
+          </TouchableOpacity>
+
+          <TouchableOpacity style={FormStyle.formButton} onPress={()=> handleSubmit(email,password)}>
+
+          <Text style={FormStyle.formButtonText}> Create Account </Text>
+
+          </TouchableOpacity>
+
+        </View>
+        
+      </View>
+
+    </>);
 }
-
