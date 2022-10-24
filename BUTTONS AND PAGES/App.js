@@ -1,8 +1,14 @@
 
+//Main Screen IMport
 import MainScreen from './MainScreen';
 
+//Function of App
 export default function app() {
-   return (
+  
+  //Returns MainScreen
+  return (
+    
+    //Call MainScreen
      <MainScreen>
       
      </MainScreen>
