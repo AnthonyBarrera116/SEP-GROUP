@@ -1,9 +1,9 @@
 import React from "react";
 import { Text, View } from "react-native";
-import LoginScreen from "./View/screens/LoginScreen";
+import AccountCreateScreen from "./View/screens/AccountCreateScreen";
 
 export default function App(){
     return (
-        <LoginScreen />
+        <AccountCreateScreen />
     );
 }
