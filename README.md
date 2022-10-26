@@ -1,7 +1,7 @@
 # SEP-GROUP
 
 ## How to run the app:
-Clone the repository and make sure you are typing commands in the SportsApp folder
+Clone the repository and make sure you are typing commands in the SportsApp folder<br>
 Type: `npm install`<br>
 Type: `npm start`<br>
 Open a new terminal type: `npm run android`<br>
