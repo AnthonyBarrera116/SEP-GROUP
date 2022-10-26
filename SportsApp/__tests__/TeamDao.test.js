@@ -21,6 +21,12 @@ test('Create New team', async function()
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
     newteam = await dao.create(newteam);
+    let newteam2 = {};
+    newteam2.TeamName = "The Programmers";
+    newteam2.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
+    newteam2.CoachID = "482a";
+    newteam2 = await dao.create(newteam2);
+    expect(newteam2).toBe(null);
     let newteams = await dao.readAll();
     expect(teams.length + 1).toBe(newteams.length);
     expect(JSON.stringify(newteams[newteams.length - 1])).toBe(JSON.stringify(newteam));

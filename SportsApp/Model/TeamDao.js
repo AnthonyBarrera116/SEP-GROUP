@@ -11,9 +11,19 @@ const teamSchema = new mongoose.Schema({
  const teamModel = mongoose.model('team', teamSchema);
 
  exports.create = async function(team){
-    const mongoteam = new teamModel(team);
-    await mongoteam.save();
-    return await exports.read(mongoteam._id);
+    let potentialTeam = await teamModel.find({TeamName: team.TeamName}).lean();
+    if(potentialTeam.length > 0)
+    {
+        console.log("Team already exists");
+        console.log(JSON.stringify(potentialTeam));
+        return null;
+    }
+    else
+    {
+        const mongoteam = new teamModel(team);
+        await mongoteam.save();
+        return await exports.read(mongoteam._id);
+    }
     //Used the read function because in tests it kept returning the _id in the beginning rather than end
  }
  
