@@ -5,18 +5,18 @@ import FormStyle from "../Form.style";
 
 const axios = require('axios');
 
-export default function LoginScreen(){
+
+export default function LoginScreen(props){
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    function handleSubmit(pUsername, pPwd){
+    function handleSubmit(pUsername, pPwd, url){
         // TODO replace Team ID properly when framework is set up
         let placeholderTeamID = "unassigned";
-        let urlLocal = "http://localhost:8081";
         const user = {username: pUsername, password: pPwd, teamID:placeholderTeamID};
-        
-        axios.post(urlLocal + '/user', user)
-        .then((response) => console.log(response))
+        console.log(url);
+        axios.post(url, user)
+        .then((response) => console.log( JSON.stringify( response.data ) ))
         .catch((error) => 
         {
             console.log(error);
@@ -67,7 +67,7 @@ export default function LoginScreen(){
             data entered on this screen to the UserController*/}
             <TouchableOpacity
                 style={FormStyle.formButton}
-                onPress={()=> handleSubmit(username, password)}>
+                onPress={()=> handleSubmit(username, password, props.url)}>
                 {/*Text for the 'Submit' button*/}
                 <Text style={FormStyle.formButtonText}>
                     Submit

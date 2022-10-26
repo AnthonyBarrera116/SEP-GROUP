@@ -4,6 +4,6 @@ import AccountCreateScreen from "./View/screens/AccountCreateScreen";
 
 export default function App(){
     return (
-        <AccountCreateScreen />
+        <AccountCreateScreen url="http://localhost:4000/user" />
     );
 }

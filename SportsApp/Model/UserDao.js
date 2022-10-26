@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
     {
         console.log("User already exists");
         console.log(JSON.stringify(potentialuser));
+        return null;
     }
     else
     {

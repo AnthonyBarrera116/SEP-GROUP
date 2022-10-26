@@ -1,4 +1,4 @@
-require('dotenv').config(); // get the env variables
+require('dotenv').config({path:'../.env'}); // get the env variables
 const mongoose = require('mongoose');
 
 exports.connect = function(test){

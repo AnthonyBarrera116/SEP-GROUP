@@ -4,15 +4,18 @@ const morgan = require('morgan'); //imports morgan
 const app = express(); //creates a new Express Application
 const userController = require('./Controllers/UserController');
 
+
+
 app.use( morgan('dev') );
 app.use( express.urlencoded({extended:true}) );
 app.use( express.json() );
 
+// setting up localhost
 let hostname = "localhost";
-let port = 8081;
+let port = 4000;
 
 
-//do read operation first on server-side
+//operations to interact with the database. functions defined in the controller
 app.post('/user', userController.saveUser);
 app.get('/user', function(request, response) {
     
