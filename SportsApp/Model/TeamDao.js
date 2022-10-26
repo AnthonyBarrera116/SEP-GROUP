@@ -48,7 +48,19 @@ exports.deleteAll = async function(){
 
 exports.update = async function(team)
 {
+    let potentialteam = await teamModel.find({TeamName: team.TeamName}).lean();
+    if(potentialteam.length > 0 && (potentialteam[0]._id != team._id || potentialteam.length > 1))
+    {                                                               //Makes sure someone doesn't change their teamname to someone else's        
+        console.log("Team name already exists while updating");      //Takes into account where team updates their account and doesn't change name
+        //if(potentialteam.length > 1)                              //Assumes potentialteam will have at most one team, since names should only be used once
+        //{
+            //console.log("Multiple teams with the same teamname.  Contact the admin.");
+        //}
+    }
+    else
+    {
     let id = { _id: team._id };
     let updates = { $set: {TeamName: team.TeamName, PlayerIDs: team.PlayerIDs, CoachID: team.Coach}};
     await teamModel.updateOne(id, updates);
+    }
 }

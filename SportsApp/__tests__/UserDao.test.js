@@ -1,7 +1,7 @@
-const dbcon = require('../model/DbConnection');
-const dao = require('../model/UserDao.js');
-beforeAll(function(){
-    dbcon.connect(1);
+const dbcon = require('../Model/DbConnection');
+const dao = require('../Model/UserDao.js');
+beforeAll(async function(){
+    await dbcon.connect(1);
 });
 afterAll(async function(){
     await dao.deleteAll();
@@ -9,6 +9,7 @@ afterAll(async function(){
 });
 test('Read All', async function()
 {
+    await dao.deleteAll();
     let users = await dao.readAll();
     //console.log(JSON.stringify(users));
     //console.log(JSON.stringify(users));
@@ -28,7 +29,7 @@ test('Create New User', async function()
     let newUser2 = await dao.create(newUser);
     expect(users.length + 1).toBe(newUsers.length);
     expect(JSON.stringify(newUsers[newUsers.length - 1])).toBe(JSON.stringify(newUser));
-    expect(newUser2).toBe(undefined);
+    expect(newUser2).toBe(null);
 });
 test('Delete User', async function()
 {

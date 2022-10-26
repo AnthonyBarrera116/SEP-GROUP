@@ -1,7 +1,7 @@
-const dbcon = require('../model/DbConnection');
-const dao = require('../model/TeamDao.js');
-beforeAll(function(){
-    dbcon.connect(1);
+const dbcon = require('../Model/DbConnection');
+const dao = require('../Model/TeamDao.js');
+beforeAll(async function(){
+    await dbcon.connect(1);
 });
 afterAll(async function(){
     await dao.deleteAll();
@@ -9,6 +9,7 @@ afterAll(async function(){
 });
 test('Read All', async function()
 {
+    await dao.deleteAll();
     let teams = await dao.readAll();
     //console.log(JSON.stringify(teams));
     expect(teams.length).toBe(0);
@@ -35,7 +36,7 @@ test('Delete team', async function()
 {
     let teams = await dao.readAll();
     let newteam = {};
-    newteam.TeamName = "The Programmers";
+    newteam.TeamName = "The Developers";
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
     newteam = await dao.create(newteam);
@@ -47,7 +48,7 @@ test('Delete team', async function()
 test('Delete All teams', async function()
 {
     let newteam = {};
-    newteam.TeamName = "The Programmers";
+    newteam.TeamName = "The Code Monkeys";
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
     await dao.create(newteam);
@@ -61,7 +62,7 @@ test('Delete All teams', async function()
 test('Update team', async function()
 {
     let newteam = {};
-    newteam.TeamName = "The Programmers";
+    newteam.TeamName = "The Updated Team";
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
     newteam = await dao.create(newteam);

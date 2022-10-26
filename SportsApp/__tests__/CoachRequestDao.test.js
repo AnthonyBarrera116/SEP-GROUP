@@ -1,7 +1,7 @@
-const dbcon = require('../model/DbConnection');
-const dao = require('../model/CoachRequestDao.js');
-beforeAll(function(){
-    dbcon.connect(1);
+const dbcon = require('../Model/DbConnection');
+const dao = require('../Model/CoachRequestDao.js');
+beforeAll(async function(){
+    await dbcon.connect(1);
 });
 afterAll(async function(){
     await dao.deleteAll();
@@ -9,6 +9,7 @@ afterAll(async function(){
 });
 test('Read All', async function()
 {
+    await dao.deleteAll();
     let CoachRequests = await dao.readAll();
     expect(CoachRequests.length).toBe(0);
 });
