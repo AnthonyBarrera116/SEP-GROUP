@@ -1,11 +1,11 @@
 # SEP-GROUP
 
 ## How to run the app:
-Type: `npm install`
-Type: `npm start`
-Open a new terminal type: `npm run android`
-Open another ternminal and type: `node SportsServer.js`\
-Open another terminal and type: `adb reverse tcp:4000 tcp:4000`
+Type: `npm install`<br>
+Type: `npm start`<br>
+Open a new terminal type: `npm run android`<br>
+Open another ternminal and type: `node SportsServer.js`<br>
+Open another terminal and type: `adb reverse tcp:4000 tcp:4000`<br>
 
 ## User Stories: 
 https://docs.google.com/spreadsheets/d/18NQHBp5y6pZpyafULcAkeIahEi_JAeNUbfRVh4Y8mPc/edit?usp=sharing
