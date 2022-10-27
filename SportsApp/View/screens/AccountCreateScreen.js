@@ -4,17 +4,27 @@ import MainStyle from "../MainStyle.style";
 import FormStyle from "../Form.style";
 
 const axios = require('axios');
-
+//const passwordUtil = require('../../Util/PasswordUtil');
 
 export default function LoginScreen(props){
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
 
+    // parameters include the username, password, and url from properties
     function handleSubmit(pUsername, pPwd, url){
         // TODO replace Team ID properly when framework is set up
         let placeholderTeamID = "unassigned";
-        const user = {username: pUsername, password: pPwd, teamID:placeholderTeamID};
+        //let hashedPw = passwordUtil.hashPassword( pPwd );
+        const user = 
+        {
+            username: pUsername, 
+            password: pPwd, 
+            teamID:placeholderTeamID
+        };
+        // log the URL just to be sure we're connecting to the right port
         console.log(url);
+        
+        // use a POST request with Axios. we're posting the user's information to the server
         axios.post(url, user)
         .then((response) => console.log( JSON.stringify( response.data ) ))
         .catch((error) => 
@@ -22,8 +32,10 @@ export default function LoginScreen(props){
             console.log(error);
         });
         
-        
+        // simply print the user's information
+        // indicates that we can retrieve user info from the DB to the app
         alert( JSON.stringify(user) );
+        // TODO - change navigation from page based on User Status (coach, admin, normal player)
     }
 
     return (<>
@@ -64,7 +76,9 @@ export default function LoginScreen(props){
 
             {/*'Submit' button
             calls the 'handleSubmit()' function, which sends
-            data entered on this screen to the UserController*/}
+            data entered on this screen to the UserController
+            
+            the URL is sent as one of the properties for this screen*/}
             <TouchableOpacity
                 style={FormStyle.formButton}
                 onPress={()=> handleSubmit(username, password, props.url)}>
