@@ -8,6 +8,11 @@ Open a new terminal type: `npm run android`<br>
 Open another ternminal and type: `node SportsServer.js`<br>
 Open another terminal and type: `adb reverse tcp:4000 tcp:4000`<br>
 
+## How to test the app:
+Clone the repository and make sure you are typing commands in the SportsApp folder<br>
+Type: `npm install` if you haven't already<br>
+Type: `npm test -- --coverage`<br>
+
 ## User Stories: 
 https://docs.google.com/spreadsheets/d/18NQHBp5y6pZpyafULcAkeIahEi_JAeNUbfRVh4Y8mPc/edit?usp=sharing
 
