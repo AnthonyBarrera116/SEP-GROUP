@@ -132,7 +132,7 @@ test('Read Information for an Existing User', async function()
 });
 
 // read info for a non-existing user
-test('Read Information for an Existing User', async function()
+test('Read Information for a Non-Existing User', async function()
 {
     // setting up request for existing user
     let req = conIntercept.mockRequest();
