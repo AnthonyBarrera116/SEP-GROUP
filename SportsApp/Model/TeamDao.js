@@ -56,11 +56,13 @@ exports.update = async function(team)
         //{
             //console.log("Multiple teams with the same teamname.  Contact the admin.");
         //}
+        return null;
     }
     else
     {
-    let id = { _id: team._id };
-    let updates = { $set: {TeamName: team.TeamName, PlayerIDs: team.PlayerIDs, CoachID: team.Coach}};
-    await teamModel.updateOne(id, updates);
+        let id = { _id: team._id };
+        let updates = { $set: {TeamName: team.TeamName, PlayerIDs: team.PlayerIDs, CoachID: team.Coach}};
+        await teamModel.updateOne(id, updates);
+        return await exports.read(team._id);
     }
 }

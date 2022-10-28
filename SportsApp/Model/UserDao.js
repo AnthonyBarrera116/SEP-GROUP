@@ -67,6 +67,7 @@ exports.update = async function(user)
         //{
             //console.log("Multiple users with the same username.  Contact the admin.");
         //}
+        return null;
     }
     else
     {
@@ -76,5 +77,6 @@ exports.update = async function(user)
     
         //console.log("Potential User is: ");
         //console.log(potentialuser);
+        return await exports.readById(user._id);
     }
 }

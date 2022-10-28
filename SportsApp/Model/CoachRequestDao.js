@@ -41,4 +41,5 @@ exports.update = async function(coachRequest)
     let id = { _id: coachRequest._id };
     let updates = { $set: {RequesterID: coachRequest.RequesterID, TeamID: coachRequest.TeamID, Reason: coachRequest.Reason}};
     await coachRequestModel.updateOne(id, updates);
+    return await exports.read(coachRequest._id);
 }
