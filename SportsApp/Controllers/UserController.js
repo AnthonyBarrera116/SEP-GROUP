@@ -126,3 +126,55 @@ exports.login = async function(request, response)
     }
     
 }
+
+exports.updateUser = async function(request, response)
+{
+    // get all of the information that we need for the user
+    let currUser = 
+    {
+        _id: request.body._id,
+        UserName: request.body.UserName,
+        Password: request.body.Password,
+        TeamID: request.body.TeamID,
+        UserType : request.body.UserType,
+        Likes: request.body.Likes
+    }
+    
+    let updatedUser = await dao.update(currUser);
+    // update returns null if it fails, so we return null if it returns null
+    if (updatedUser === null)
+    {
+        response.status(404);
+        response.send(null);
+    }
+    else // update is successful
+    {
+        // send info without sending the password information
+        let updatedUserInfo = 
+        {
+            _id: updatedUser._id,
+            UserName: updatedUser.UserName,
+            TeamID: updatedUser.TeamID,
+            UserType: updatedUser.UserType,
+            Likes: updatedUser.Likes
+        }
+        response.status(200);
+        response.send(updatedUserInfo);
+    }
+}
+
+exports.delUser = async function(request, response)
+{
+    let userID = request.body._id;
+    let deletedUser = await dao.del(userID);
+    if (deletedUser !== null)
+    {
+        response.status(200);
+        response.send(deletedUser);
+    }
+    else
+    {
+        response.status(404);
+        response.send(null);
+    }
+}

@@ -146,3 +146,91 @@ test('Read Information for a Non-Existing User', async function()
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.send).toHaveBeenCalledWith(null);
 });
+
+// updating an existing user's information
+test('Updating an Existing User', async function()
+{
+    // setting up request
+    let req = conIntercept.mockRequest();
+    req.body =
+    {
+        _id:0,
+        UserName:"fred",
+        Password:"fredsOtherPW",
+        UserType:1,
+        TeamID:"previouslyUnassigned",
+        Likes:[]
+    };
+    // setting up response
+    let res = conIntercept.mockResponse();
+    
+    await userController.updateUser(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(
+    {
+        _id:0,
+        UserName:"fred",
+        UserType:1,
+        TeamID:"previouslyUnassigned",
+        Likes:[]
+    });
+});
+
+// trying to update a non-existent user
+test('Updating a Non-Existing User', async function()
+{
+    let req = conIntercept.mockRequest();
+    req.body =
+    {
+        _id:0,
+        UserName:"jacob",
+        Password:"jacobsPW",
+        UserType:0,
+        TeamID:"unassigned",
+        Likes:[]
+    };
+    // setting up response
+    let res = conIntercept.mockResponse();
+    
+    await userController.updateUser(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.send).toHaveBeenCalledWith(null);
+});
+
+// deleting a user with the correct ID
+test('Deleting an Existing User', async function()
+{
+    let req = conIntercept.mockRequest();
+    req.body._id = 0;
+    // setting up response
+    let res = conIntercept.mockResponse();
+    
+    await userController.delUser(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(
+    {
+        _id:0,
+        UserName:"fred",
+        Password:"fredsPW",
+        UserType:0,
+        TeamID:"unassigned",
+        Likes:[]
+    });
+});
+
+// deleting a user with a non-existent ID
+test('Deleting Using an Invalid ID', async function()
+{
+    let req = conIntercept.mockRequest();
+    req.body._id = 30;
+    // setting up response
+    let res = conIntercept.mockResponse();
+    
+    await userController.delUser(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.send).toHaveBeenCalledWith(null);
+});
