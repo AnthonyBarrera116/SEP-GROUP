@@ -3,7 +3,7 @@
 import React from 'react';
 
 // Imports Bottom Navigation from React-Native-Paper
-import {BottomNavigation} from 'react-native-paper';
+import {BottomNavigation} from "react-native-paper";
 
 // Imports Scores Screen
 import Scores from './Scores';
