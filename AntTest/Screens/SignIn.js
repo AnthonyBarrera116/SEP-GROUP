@@ -14,10 +14,10 @@ import FormStyle from "../Styles/FormStyle";
 const e = 'Aj';
 const pass ='1234';
 const co = 0;
-const team = 1;
+const team = 0;
 
 // Function For Logging In
-export default function LoginScreen({navigation}){
+export default function SignIn({navigation}){
 
   // Const Variable for email
   const [email, setEmail] = React.useState("");
@@ -108,7 +108,7 @@ export default function LoginScreen({navigation}){
 
           </TouchableOpacity>
 
-          <TouchableOpacity style={FormStyle.formButton} onPress={()=> navigation.navigate('CreateAccount')}>
+          <TouchableOpacity style={FormStyle.formButton} onPress={()=> navigation.navigate('CreateAccount', url="http://localhost:4000/user" )}>
 
           <Text style={FormStyle.formButtonText}> Create Account </Text>
 

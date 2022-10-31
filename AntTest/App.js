@@ -1,17 +1,9 @@
+import React from "react";
+import { Text, View } from "react-native";
+import MainScreen from "./Screens/MainScreen";
 
-//Main Screen IMport
-import MainScreen from './Screens/MainScreen';
-
-//Function of App
-export default function app() {
-  
-  //Returns MainScreen
-  return (
-    
-    //Call MainScreen
-     <MainScreen>
-      
-     </MainScreen>
-       
-   );
- }
+export default function App(){
+    return (
+        <MainScreen/>
+    );
+}

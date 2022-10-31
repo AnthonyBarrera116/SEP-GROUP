@@ -6,17 +6,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-
-//Imports Sign In Screen
-import SignIn from '../Screens/SignIn';
-
-// Imports SIgn In Screen
-import CreateAccount from '../Screens/CreateAccount';
-
 // Imports profiles Screens
-import CoachProfile from '../Screens/CoachProfile'
 import ProfileWithTeam from '../Screens/ProfileWithTeam'
 import ProfileWithoutTeam from '../Screens/ProfileWithoutTeam'
+import CoachProfile from '../Screens/CoachProfile'
+import DeleteTeam from '../Screens/DeleteTeam'
+import DeleteAccount from '../Screens/DeleteAccount'
+import TeamRequestoPlayer from '../Screens/TeamRequestoPlayer'
+import RequestTeam from '../Screens/RequestTeam'
+import requestToCoach from '../Screens/createTeam-requestToCoach'
+import CreateAccount from '../Screens/AccountCreateScreen';
+import SignIn from '../Screens/SignIn';
 
 // Creates Stack Navigator
 const Stack = createNativeStackNavigator()
@@ -62,6 +62,24 @@ export default function SignInNav() {
             headerLeft: () => <></>,
           }}
           />
+          
+          <Stack.Screen name="DeleteTeam" component={DeleteTeam} 
+          
+          />
+          <Stack.Screen name="DeleteAccount" component={DeleteAccount} 
+          
+          />
+          <Stack.Screen name="TeamRequestoPlayer" component={TeamRequestoPlayer} 
+         
+          />
+          <Stack.Screen name="RequestTeam" component={RequestTeam} 
+          
+          />
+
+          <Stack.Screen name="RequatCoach" component={requestToCoach} 
+                    
+          />
+       
         </Stack.Navigator>
     </NavigationContainer>
     </PaperProvider>

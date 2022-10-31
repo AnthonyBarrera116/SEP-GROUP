@@ -3,7 +3,7 @@
 import React from 'react';
 
 // Imports Bottom Navigation from React-Native-Paper
-import {BottomNavigation} from "react-native-paper";
+import {BottomNavigation} from 'react-native-paper';
 
 // Imports Scores Screen
 import Scores from './Scores';
@@ -14,7 +14,7 @@ import Standings from './Standings';
 // Imports Calander screen
 import Calander from './Calander';
 
-// Imports Sign in screen
+// Imports SignInNav screen
 import SignInNav from '../NAVIGATION/SignInNav';
 
 // Main Screen for going through Bottom Navigation
