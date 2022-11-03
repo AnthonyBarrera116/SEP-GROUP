@@ -1,10 +1,10 @@
 const { Db } = require('mongodb');
 const mongoose = require('mongoose');
 
-const playerRequestSchema = new mongoose.Schema({
- CoachID: String,
- PlayerID: String,
- TeamID: String,
+const playerRequestSchema = new mongoose.Schema({//Request player to a team
+ CoachID: String,//Coach requesting
+ PlayerID: String,//Player being requested
+ TeamID: String,//Team being requested to
  Reason: String,
  },
  { collection : 'Player Requests' });
