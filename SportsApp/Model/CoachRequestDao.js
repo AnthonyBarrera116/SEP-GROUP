@@ -1,7 +1,7 @@
 const { Db } = require('mongodb');
 const mongoose = require('mongoose');
 
-const coachRequestSchema = new mongoose.Schema({
+const coachRequestSchema = new mongoose.Schema({//Player requests to be coach
  RequesterID: String,
  TeamID: String,
  Reason: String,
