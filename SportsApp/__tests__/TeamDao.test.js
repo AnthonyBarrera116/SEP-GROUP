@@ -18,15 +18,11 @@ test('Create New team', async function()
 {
     let teams = await dao.readAll();
     let newteam = {};
-    newteam.TeamName = "The Programmers";
+    newteam.TeamName = "Supposed to already exist";
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
     newteam = await dao.create(newteam);
-    let newteam2 = {};
-    newteam2.TeamName = "The Programmers";
-    newteam2.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
-    newteam2.CoachID = "482a";
-    newteam2 = await dao.create(newteam2);
+    let newteam2 = await dao.create(newteam);
     expect(newteam2).toBe(null);
     let newteams = await dao.readAll();
     expect(teams.length + 1).toBe(newteams.length);
@@ -52,8 +48,11 @@ test('Delete All teams', async function()
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
     await dao.create(newteam);
+    newteam.TeamName = "The Code Baboons";
     await dao.create(newteam);
+    newteam.TeamName = "The Code Apes";
     await dao.create(newteam);
+    newteam.TeamName = "The Code Gorillas";
     await dao.create(newteam);
     await dao.deleteAll();
     let newteams = await dao.readAll();
@@ -62,12 +61,14 @@ test('Delete All teams', async function()
 test('Update team', async function()
 {
     let newteam = {};
-    newteam.TeamName = "The Updated Team";
+    newteam.TeamName = "The Students";
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
     newteam = await dao.create(newteam);
     let updatedteam = newteam;
-    updatedteam.TeamName = "The Students";
+    updatedteam.TeamName = "The Updated Team";
+    updatedteam.PlayerIDs = ["No one"];
+    updatedteam.CoachID = "482b";
     await dao.update(updatedteam);
     expect(JSON.stringify(updatedteam)).toBe(JSON.stringify(await dao.read(newteam._id)));
 });

@@ -60,7 +60,9 @@ test('Update CoachRequest', async function()
     newCoachRequest.Reason = "Number";
     newCoachRequest = await dao.create(newCoachRequest);
     let updatedCoachRequest = newCoachRequest;
-    updatedCoachRequest.Reason = "Jenny";
+    updatedCoachRequest.RequesterID = "12341234-";
+    updatedCoachRequest.TeamID = "-45674567";
+    updatedCoachRequest.Reason = "n";
     await dao.update(updatedCoachRequest);
     expect(JSON.stringify(updatedCoachRequest)).toBe(JSON.stringify(await dao.read(newCoachRequest._id)));
 });
