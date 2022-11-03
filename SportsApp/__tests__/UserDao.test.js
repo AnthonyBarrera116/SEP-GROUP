@@ -19,7 +19,8 @@ test('Create New User', async function()
 {
     let users = await dao.readAll();
     let newUser = {};
-    newUser.UserName = "Nick";
+    newUser.UserName = "Supposed to already exist";
+    newUser.Email = "ldfalfjqwerqrlfj@sldfhaldfj.com";
     newUser.Password = "password";
     newUser.UserType = 2;
     newUser.TeamID = "482a";
@@ -36,6 +37,7 @@ test('Delete User', async function()
     let users = await dao.readAll();
     let newUser = {};
     newUser.UserName = "Erik";
+    newUser.Email = "ldfalfjasdlfj@soiupupaldfj.com";
     newUser.Password = "password";
     newUser.UserType = 2;
     newUser.TeamID = "482a";
@@ -49,7 +51,8 @@ test('Delete User', async function()
 test('Delete All Users', async function()
 {
     let newUser = {};
-    newUser.UserName = "Anthony";
+    newUser.UserName = "Nick";
+    newUser.Email = "ldfalfjvcnmxcvasdlfj@sldfhaldfj.com";
     newUser.Password = "password";
     newUser.UserType = 2;
     newUser.TeamID = "482a";
@@ -71,6 +74,7 @@ test('Update User', async function()
 {
     let newUser = {};
     newUser.UserName = "Anthony";
+    newUser.Email = "ldfalfjasdlfj@sldfhald98579fj.com";
     newUser.Password = "password";
     newUser.UserType = 2;
     newUser.TeamID = "482a";
@@ -78,6 +82,11 @@ test('Update User', async function()
     newUser = await dao.create(newUser);
     let updatedUser = newUser;
     updatedUser.UserName = "Tony";
+    updatedUser.Email = "qwierupqperu@sldfhaldfj.com";
+    updatedUser.Password = "password1";
+    updatedUser.UserType = 1;
+    updatedUser.TeamID = "482b";
+    updatedUser.Likes = ["This post", "That post", "Those posts"];
     await dao.update(updatedUser);
     await dao.readByUsername("Tony");
     expect(JSON.stringify(updatedUser)).toBe(JSON.stringify(await dao.readById(newUser._id)));

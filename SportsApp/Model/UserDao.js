@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
  UserName: String,
+ Email: String,
  Password: String,
  UserType: Number, //0-Player, 1-Coach, 2-Admin
  TeamID: String,
@@ -18,7 +19,7 @@ const userSchema = new mongoose.Schema({
     //console.log(potentialuser);
     if(potentialuser.length > 0)
     {
-        console.log("User already exists");
+        console.log("User \"" + user.UserName + "\" already exists");
         console.log(JSON.stringify(potentialuser));
         return null;
     }
@@ -62,7 +63,7 @@ exports.update = async function(user)
     let potentialuser = await userModel.find({UserName: user.UserName}).lean();
     if(potentialuser.length > 0 && (potentialuser[0]._id != user._id || potentialuser.length > 1))
     {                                                               //Makes sure someone doesn't change their username to someone else's        
-        console.log("Username already exists while updating");      //Takes into account where user updates their account and doesn't change name
+        console.log("Username \"" + user.UserName + "\" already exists while updating");      //Takes into account where user updates their account and doesn't change name
         //if(potentialuser.length > 1)                              //Assumes potentialuser will have at most one user, since names should only be used once
         //{
             //console.log("Multiple users with the same username.  Contact the admin.");
@@ -72,7 +73,7 @@ exports.update = async function(user)
     else
     {
         let id = { _id: user._id };
-        let updates = { $set: {UserName: user.UserName, Password: user.Password, UserType: user.UserType, TeamID: user.TeamID, Likes: user.Likes}};
+        let updates = { $set: {UserName: user.UserName, Email: user.Email, Password: user.Password, UserType: user.UserType, TeamID: user.TeamID, Likes: user.Likes}};
         await userModel.updateOne(id, updates);
     
         //console.log("Potential User is: ");
