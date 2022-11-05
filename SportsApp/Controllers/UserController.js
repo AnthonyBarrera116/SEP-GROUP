@@ -226,3 +226,56 @@ exports.makeCoach = async function(request, response)
     }
     
 }
+
+/*
+function to remove coach status from a player who has it
+assumes request body has
+    playerID - of player (who is a coach) whose status must be reset
+responds with player information after the update
+*/
+exports.removeCoach = async function(request, response)
+{
+    // retrieve ID from request body
+    let playerID = request.body.playerID;
+    
+    // retrieve player information from DAO
+    let user = await dao.read(playerID);
+    
+    // if the DAO read responds with a player, change their status to '0'
+    if(user !== null)
+    {
+        // set their playerType to 0, so a normal player
+        user.UserType = 0;
+        
+        // update the user in the DAO
+        let updatedUser = await dao.update(user);
+        
+        // if the update succeeds, respond with the updated user
+        if(updatedUser !== null)
+        {
+            updatedUser.Password = null;
+            response.status(200);
+            response.send(updatedUser);
+        }
+        else // else, respond with null
+        {
+            response.status(500);
+            response.send(null);
+        }
+    }
+    else // if reading the user fails, respond with 'null'
+    {
+        response.status(404);
+        response.send(null);
+    }
+}
+
+
+/*
+function to change a player's team. can be used to make their team 'unassigned'
+assumes the request body has
+    playerID - of player whose team is to be changed
+    teamName - of the new team that they will be a part of. can be changed to value of "unassigned" to make it so that they are not affiliated with a team
+responds with player information after the update
+NOTE - subsequent update MUST be made to the team roster on the frontend via the TeamController, as this file is not concerned with team-level happenings
+*/
