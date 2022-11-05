@@ -31,9 +31,12 @@ let hostname = "localhost";
 let port = 4000;
 
 
-//operations to interact with the database. functions defined in the controller
-app.post('/user', userController.saveUser);
-app.get('/user', userController.login);
+//operations to interact with the database. functions defined in the controllers
+
+// user operations
+app.post('/user', userController.saveUser); // creating a new user
+app.get('/user', userController.getUserInfo); // getting user information
+app.get('/dologin', userController.login); // logging in
 
 
 const server = app.listen(port, hostname, 

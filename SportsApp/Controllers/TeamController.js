@@ -9,7 +9,7 @@ exports.setDao = function(otherDao)
 function to create a team
 assumes at least a coach exists and that the array for players is empty
 */
-exports.createTeam = function(request, response)
+exports.createTeam = async function(request, response)
 {
     // get the coach and team name from the request
     // IMPORTANT - 'teamCoach' must be the _id value for the coach, NOT the username
@@ -24,7 +24,7 @@ exports.createTeam = function(request, response)
         CoachID: teamCoach,
     };
     
-    let returnedTeam = dao.create(newTeam);
+    let returnedTeam = await dao.create(newTeam);
     
     //if we get back null, respond with null (indicating a team with the name already exists)
     if( returnedTeam === null)
@@ -44,7 +44,7 @@ exports.createTeam = function(request, response)
 function to add a player to a team
 assumes the request will contain the team ID and player ID
 */
-exports.addPlayer = function(request, response)
+exports.addPlayer = async function(request, response)
 {
     // just the teamname. gets the rest of the team from the DAO
     let teamID = request.body.teamID;
@@ -52,7 +52,7 @@ exports.addPlayer = function(request, response)
     
     // can change DAO to read by team name and possibly make more streamlined,
     //    but that's a different matter
-    let fullTeam = dao.read(teamID);
+    let fullTeam = await dao.read(teamID);
     
     // if the team is found, add the new player
     if( fullTeam !== null)
@@ -61,7 +61,7 @@ exports.addPlayer = function(request, response)
         fullTeam.PlayerIDs.push(playerToAdd);
         
         // uses the DAO to update with the new player
-        let updatedTeam = dao.update( fullTeam );
+        let updatedTeam = await dao.update( fullTeam );
         
         // if the updatedTeam is not null, then respond with the updated team
         if(updatedTeam !== null)

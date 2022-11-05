@@ -178,3 +178,51 @@ exports.delUser = async function(request, response)
         response.send(null);
     }
 }
+
+/*
+function to make a user into a coach
+assumes this is called after a request to become a coach is fulfilled
+assumes request has
+    playerID
+    teamID
+
+this function, on the frontend, should be called with an equivalent function in the teamController to do both things at once so that the team information is updated at the same time as the user information
+*/
+exports.makeCoach = async function(request, response)
+{
+    // get the information from the request body
+    let playerID = request.body.playerID;
+    let teamID = request.body.teamID;
+    
+    // retrieve user from the DAO
+    let user = await dao.read(playerID);
+    
+    // if the read succeeds, update the user. if not, respond with 'null'
+    if (user !== null)
+    {
+        // change the userType to coach and change the team name
+        user.UserType = 1;
+        user.TeamID = teamID;
+        
+        // push update to the DAO
+        let updatedUser = await dao.update(user);
+        
+        // if the update succeeds, return the updated user, else return null
+        if( updatedUser !== null )
+        {
+            response.status(200);
+            response.send(updatedUser);
+        }
+        else // if the update fails, return 'null'
+        {
+            response.status(500);
+            response.send(null);
+        }
+    }
+    else // user couldn't be read from DAO, respond with null
+    {
+        response.status(404);
+        response.send(null);
+    }
+    
+}
