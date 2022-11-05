@@ -12,8 +12,6 @@ exports.saveUser = async function(request, response)
     // creating a new User Object to be sent to the DAO
     // shares the exact same fields as a user in the DAO
     
-    // send 200 status, indicating we connected
-    response.status(200);
     //console.log("i\'m running this from the controller!");
     //console.log( JSON.stringify(request.body) );
     
@@ -34,27 +32,25 @@ exports.saveUser = async function(request, response)
         UserType:0,
         TeamID:teamID,
         Likes:[]
-    }
+    };
     
     // creating the user with the dao. if the user already exists, the dao returns 'null', else it returns the user
     let returnedUser = await dao.create( user );
     // if we get a user, send their information minus their password
     if (returnedUser !== null)
     {
-        let retInfo = 
-        {
-            _id: returnedUser._id,
-            UserName: returnedUser.UserName,
-            UserType: returnedUser.UserType,
-            TeamID: returnedUser.TeamID,
-            Likes: returnedUser.Likes
-        }
+        returnedUser.Password = null; // set the password to 'null' for security
+        
+        // send 200 status, indicating we connected
+        response.status(200);
+        
         // send user information back to the app
-        response.send(retInfo);
+        response.send(returnedUser);
     }
     // if we get null, send back null
     else
     {
+        response.status(500);
         response.send(null);
     }
 }
@@ -69,24 +65,23 @@ exports.getUserInfo = async function(request, response)
     
     // if the user isn't null from the DAO
     if (userInfo !== null){
-        // return everything except for the password
-        let retInfo = 
-        {
-            UserName: userInfo.UserName,
-            TeamID: userInfo.TeamID,
-            UserType: userInfo.UserType,
-            Likes: userInfo.Likes
-        };
+        // set password to 'null' before returning
+        userInfo.Password = null;
         response.status(200);
-        response.send(retInfo);
+        response.send(userInfo);
     }
+    // user is not found
     else
     {
+        // send 404 status and null
         response.status(404);
         response.send(null);
     }
 }
 
+/*
+gets the user based on the username and password and saves them in the session
+*/
 exports.login = async function(request, response)
 {
     // get the username and password from the request
@@ -107,24 +102,29 @@ exports.login = async function(request, response)
     {
         response.status(200);
         
-        let retInfo = 
-        {
-            _id: user._id,
-            UserName: user.UserName,
-            TeamID: user.TeamID,
-            UserType: user.UserType,
-            Likes: user.Likes
-        };
+        // add the user to the session
+        user.Password = null; // security
+        request.session.user = user;
         
-        response.send(retInfo);
+        // send the logged in user back to the app
+        response.send(user);
     }
     // user isn't found or the passwords don't match
     else
     {
-        response.status(404);
         response.send(null);
     }
     
+}
+
+/*
+retrieves the user that is currently logged in to the session
+*/
+exports.loggedUser = function(request, response)
+{
+    response.status(200);
+    response.send( request.session.user ); // send the logged in user
+    response.end();
 }
 
 exports.updateUser = async function(request, response)
