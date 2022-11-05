@@ -13,6 +13,17 @@ Clone the repository and make sure you are typing commands in the SportsApp fold
 Type: `npm install` if you haven't already<br>
 Type: `npm test -- --coverage`<br>
 
+## Navigation : (For getting the app to run without porblems with navigation)
+npm install @react-navigation/bottom-tabs
+
+npm install react-native-paper --save
+
+npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view
+
+npm install @react-native/native-stack
+
+npm install @react-navigation/native-stack
+
 ## User Stories: 
 https://docs.google.com/spreadsheets/d/18NQHBp5y6pZpyafULcAkeIahEi_JAeNUbfRVh4Y8mPc/edit?usp=sharing
 
