@@ -8,7 +8,8 @@ const morgan = require('morgan'); //imports morgan
 const session = require('express-session');
 const cors = require('cors');
 const memorystore = require('memorystore')(session);
-const userController = require('./Controllers/UserController'); // creating the controller
+const userController = require('./Controllers/UserController'); // creating the user controller
+const teamController = require('./Controllers/TeamController');
 
 const app = express(); //creates a new Express Application
 
@@ -37,6 +38,9 @@ let port = 4000;
 app.post('/user', userController.saveUser); // creating a new user
 app.get('/user', userController.getUserInfo); // getting user information
 app.get('/dologin', userController.login); // logging in
+
+// team operations
+app.post('/maketeam', teamController.createTeam);
 
 
 const server = app.listen(port, hostname, 
