@@ -23,6 +23,8 @@ let port = 4000;
 app.post('/user', userController.saveUser);
 app.get('/user', userController.login);
 
+app.post('/user', userController.saveUser);
+app.get('/user', userController.login);
 
 const server = app.listen(port, hostname, 
     function()

@@ -27,10 +27,10 @@ const MainScreen = () => {
   const [routes] = React.useState([
 
     // Keys and titles and icons for each of the tabs
-    { key: 'Scores', title: 'Scores', icon: { uri: 'https://cdn-icons-png.flaticon.com/512/334/334345.png' },color: '#795548'},
-    { key: 'Standings', title: 'Standings' ,icon: { uri: 'https://icons.veryicon.com/png/o/miscellaneous/sk-common-simple-linear-icon/ranking-11.png' }},
-    { key: 'Calander', title: 'Calander',icon: { uri: 'https://cdn-icons-png.flaticon.com/512/55/55281.png' } },
-    { key: 'SignInNav', title: 'SignInNav',icon: { uri: 'https://cdn4.iconfinder.com/data/icons/e-commerce-181/512/477_profile__avatar__man_-512.png' }},
+    { key: 'Scores', title: 'Scores', icon: { uri: 'https://cdn-icons-png.flaticon.com/512/334/334345.png' },color: 'blue'},
+    { key: 'Standings', title: 'Standings' ,icon: { uri: 'https://icons.veryicon.com/png/o/miscellaneous/sk-common-simple-linear-icon/ranking-11.png' },color: 'blue'},
+    { key: 'Calander', title: 'Calander',icon: { uri: 'https://cdn-icons-png.flaticon.com/512/55/55281.png' },color: 'blue' },
+    { key: 'SignInNav', title: 'SignInNav',icon: { uri: 'https://cdn4.iconfinder.com/data/icons/e-commerce-181/512/477_profile__avatar__man_-512.png' },color: 'blue'},
 
   ]);
 

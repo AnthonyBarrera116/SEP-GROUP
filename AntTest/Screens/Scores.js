@@ -5,7 +5,7 @@ import React from "react";
 import { View } from "react-native";
 
 // Score boxs for box screen
-import ScoreBox from "../Boxes/ScoreBox";
+import ScrollScore from "../Screens/ScrollScore";
 
 // Scores Function Screen
 export default function Scores(){
@@ -13,13 +13,8 @@ export default function Scores(){
     // Returns view of Scores Boxes for Scores screen
     return (
 
-     <View>
-
-        <ScoreBox>
-
-        </ScoreBox>
+      <ScrollScore/>
      
-     </View>
 
    );
 }
