@@ -52,6 +52,11 @@ const userSchema = new mongoose.Schema({
     return user;
 }
 
+exports.readByTeamID = async function(TeamID){
+    let users = await userModel.find({TeamID: TeamID}).lean();
+    return users;
+}
+
 exports.readByUsername = async function(name){//Assumes there will only be one user with the given name
     let user = await userModel.findOne({UserName: name}).lean();
     //console.log("Read by username: ")
