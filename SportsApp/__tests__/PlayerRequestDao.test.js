@@ -71,3 +71,22 @@ test('Update playerRequest', async function()
     await dao.update(updatedplayerRequest);
     expect(JSON.stringify(updatedplayerRequest)).toBe(JSON.stringify(await dao.read(newplayerRequest._id)));
 });
+
+test('Read by PlayerID', async function()
+{
+    await dao.deleteAll();
+    let newPlayerRequest = {};
+    let newPlayerRequest2 = {};
+    newPlayerRequest.CoachID = "9001-";
+    newPlayerRequest.PlayerID = "-1000";
+    newPlayerRequest.TeamID = "-575";
+    newPlayerRequest.Reason = "8000";
+    newPlayerRequest2.CoachID = "9001-";
+    newPlayerRequest2.PlayerID = "-1000";
+    newPlayerRequest2.TeamID = "-575";
+    newPlayerRequest2.Reason = "8000";
+    newPlayerRequest = await dao.create(newPlayerRequest);
+    newPlayerRequest2 = await dao.create(newPlayerRequest2);
+    let playerRequests = [newPlayerRequest, newPlayerRequest2];
+    expect(JSON.stringify(playerRequests)).toBe(JSON.stringify(await dao.readByPlayerID(newPlayerRequest.PlayerID)));
+});

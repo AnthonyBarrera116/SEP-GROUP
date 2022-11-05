@@ -28,6 +28,13 @@ const playerRequestSchema = new mongoose.Schema({//Request player to a team
     return playerRequest;
 }
 
+exports.readByPlayerID = async function(PlayerID){//Assumes there will only be one user with the given name
+    let request = await playerRequestModel.find({PlayerID: PlayerID}).lean();
+    //console.log("Read by username: ")
+    //console.log(JSON.stringify(user));
+    return request;
+}
+
 exports.del = async function(id){
     let playerRequest = await playerRequestModel.findByIdAndDelete(id);
     return playerRequest;
