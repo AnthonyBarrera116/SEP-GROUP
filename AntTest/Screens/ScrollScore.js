@@ -8,7 +8,7 @@ import { ScrollView,StyleSheet, Text, View, } from 'react-native';
 teamsGames = []
 
 // Get scehdule
-import Sch from "./Schedule"
+import Sch from "../Schedule"
 
 // Stylsheet for box scores and top screen with home and away text
 const styles = StyleSheet.create({
