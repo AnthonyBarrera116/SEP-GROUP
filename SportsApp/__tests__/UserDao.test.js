@@ -99,3 +99,40 @@ test('Update User', async function()
     createdUser2.UserName = "Supposed to already exist 2";
     expect(await dao.update(createdUser2)).toBe(null);
 });
+
+test('Read by TeamID', async function()
+{
+    await dao.deleteAll();
+    let newUser = {};
+    let newUser2 = {};
+    newUser.UserName = "N";
+    newUser.Email = "qwierupqperu@sldfhaldfj.com";
+    newUser.Password = "password";
+    newUser.UserType = 2;
+    newUser.TeamID = "482a";
+    newUser.Likes = ["This post", "That post"];
+    newUser2.UserName = "M";
+    newUser2.Email = "p";
+    newUser2.Password = "password";
+    newUser2.UserType = 2;
+    newUser2.TeamID = "482a";
+    newUser2.Likes = ["This post", "That post"];
+    newUser = await dao.create(newUser);
+    newUser2 = await dao.create(newUser2);
+    let users = [newUser, newUser2];
+    expect(JSON.stringify(users)).toBe(JSON.stringify(await dao.readByTeamID(newUser.TeamID)));
+});
+
+test('Read by UserName', async function()
+{
+    await dao.deleteAll();
+    let newUser = {};
+    newUser.UserName = "N";
+    newUser.Email = "qwierupqperu@sldfhaldfj.com";
+    newUser.Password = "password";
+    newUser.UserType = 2;
+    newUser.TeamID = "482a";
+    newUser.Likes = ["This post", "That post"];
+    let createdUser = await dao.create(newUser);
+    expect(JSON.stringify(createdUser)).toBe(JSON.stringify(await dao.readByUsername(createdUser.UserName)));
+});
