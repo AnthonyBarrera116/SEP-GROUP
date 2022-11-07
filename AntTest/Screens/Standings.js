@@ -55,7 +55,9 @@ export default function Standings(){
       return y.pts- x.pts;
    });
 
-   console.log(standing)
+
+
+   //console.log(standing)
 
    // returns Standings box
     return (<>

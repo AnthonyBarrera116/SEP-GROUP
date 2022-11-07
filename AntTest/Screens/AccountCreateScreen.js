@@ -56,7 +56,7 @@ export default function LoginScreen({navigation}){
 
     return (<>
         {/*Title for the page*/}
-        <View 
+        <View
             style={FormStyle.groupView}>
         
             <Text 
