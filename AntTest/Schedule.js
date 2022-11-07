@@ -1,114 +1,98 @@
 // Getting teams js
-import t from "./teams"
-
-teams =["A","B","C","D","E","F","G","H","I","J","K","L","M"]
+import Teams, {GetTeams}from "./teams";
+import  Text from 'react-native';
 
 
 // Schedule maker
+
+
 export default function Schedule() {
 
+    
+    Teams.call(GetTeams())
+
     // Gets teams form teams js
-    arrayOfTeams = t
+    arrayOfTeams = GetTeams()
 
     // date real time
     const date = new Date();
     // array with teams matched up
-    teamVSTwice = []
-
-    // Games by date Calander
-    allGames = []
-
-    // counter for checking and fixing dates
-    game_date = 0
+    teamMatchUps = []
 
     // Setting all matchups with realdate 
     for (a of arrayOfTeams){
 
         for (b of arrayOfTeams){
 
-            if (a !== b){
+            if (a.team !== b.team){
 
-                teamVSTwice.push([a,b,date.getDay() + " / " + date.getMonth() + " / " + date.getFullYear()])
+
+                let Sch = 
+                {
+                    Home: a.team,
+                    Away: b.team,
+                    Date: {Day: date.getDate(), Month: date.getMonth(), Year: date.getFullYear()}
+                };
+
+                teamMatchUps.push(Sch)
 
             }
         }
-
-    }
-
-
-    // goes through and removes all duplicate when setting up and sets date in three seprate spots in array
-    for (const elem of arrayOfTeams){
-
-        for (i = 0;i < teamVSTwice.length;i++){
-
-            if(teamVSTwice[i][0] == elem || teamVSTwice[i][1] == elem){
-
-                teamVSTwice[i][2] = (date.getDay() + game_date)
-
-                teamVSTwice[i][3] = (date.getMonth())
-
-                teamVSTwice[i][4] = (date.getFullYear())
-                
-                game_date += 1
-                
-                allGames.push(teamVSTwice[i])
-                teamVSTwice.splice(i, 1)
-
-            }
-            
-
-        }
-        game_date = 0
 
     }
 
     // checks dates and makes sure no team is playing twice on the same day also updates year and month if needed
-    for (k = 0;k < allGames.length;k++){
+    for (k = 0;k < teamMatchUps.length;k++){
 
-        for (i = 0;i < allGames.length;i++){
+        for (i = 0;i < teamMatchUps.length;i++){
 
-            if(allGames[k][0] ==allGames[i][0] && allGames[k][1] == allGames[i][1] ){
+            if(teamMatchUps[k].Home ==teamMatchUps[i].Home && teamMatchUps[k].Away == teamMatchUps[i].Away  ){
 
                 continue
 
             }
                 
-            else if ((allGames[k][0] == allGames[i][1]) || (allGames[k][1] == allGames[i][0] ) || (allGames[k][0] == allGames[i][0]) || (allGames[k][1] == allGames[i][1])){
+            else if ((teamMatchUps[k].Home == teamMatchUps[i].Away ) || (teamMatchUps[k].Away == teamMatchUps[i].Home) || (teamMatchUps[k].Home == teamMatchUps[i].Home) || (teamMatchUps[k].Away == teamMatchUps[i].Away )){
 
-                if (allGames[i][2] == allGames[k][2]){
+                if ((teamMatchUps[i].Date.Day == teamMatchUps[k].Date.Day)&&(teamMatchUps[i].Date.Month == teamMatchUps[k].Date.Month)&&(teamMatchUps[i].Date.Year == teamMatchUps[k].Date.Year)){
 
                     
                 
-                    allGames[i][2] = (allGames[i][2] + arrayOfTeams.length + date.getDay() )
+                    teamMatchUps[i].Date.Day = (teamMatchUps[i].Date.Day + 1 )
                     
-                    checkingNewMonth = new Date(allGames[i][4], allGames[i][3] + 1, 0)
+                    checkingNewMonth = new Date(teamMatchUps[i].Date.Year, teamMatchUps[i].Date.Month + 1, 0)
 
 
-                    if (allGames[i][2] > checkingNewMonth.getDate()){
-
-                        
-                        allGames[i][2] = ( allGames[i][2] - checkingNewMonth.getDate())
-                        allGames[i][3] = allGames[i][3] + 1
-
-                        if (allGames[i][3] > 12){
+                    if (teamMatchUps[i].Date.Day > checkingNewMonth.getDate()){
 
                         
-                            allGames[i][3] = (allGames[i][3] - 12 )
-                            allGames[i][4] = allGames[i][4] + 1
+                        teamMatchUps[i].Date.Day = teamMatchUps[i].Date.Day- checkingNewMonth.getDate()
+                        teamMatchUps[i].Date.Month = teamMatchUps[i].Date.Month + 1
+
+                        if (teamMatchUps[i].Date.Month > 12){
+
+                        
+                            teamMatchUps[i].Date.Month= teamMatchUps[i].Date.Month - 12
+                            teamMatchUps[i].Date.Year = teamMatchUps[i].Date.Year + 1
     
                         }
 
                     }
 
-                    i =0
+                    i = 0
+                    k = 0
+
                 }
-                
+
             }
                 
         }
-
     }
 
-    return allGames;
+    return (teamMatchUps);
+
+    
+      
+    
 
 }

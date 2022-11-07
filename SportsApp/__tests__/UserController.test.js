@@ -1,6 +1,6 @@
-const userController = require('./UserController');
+const userController = require('../Controllers/UserController');
 const conIntercept = require('../Util/ControllerInterceptor');
-const mockDao = require('./MockUserDao');
+const mockDao = require('../Util/MockUserDao');
 
 
 // set the DAO to the mock DAO
@@ -27,6 +27,7 @@ test('Login With Existing User, Correct Credentials', async function()
     {
         _id: 0,
         UserName:"fred",
+        Password: null,
         UserType:0,
         TeamID:"unassigned",
         Likes:[]
@@ -85,6 +86,7 @@ test('Creating Non-Existing User', async function()
     expect(res.send).toHaveBeenCalledWith(
     {
         UserName:"jacob",
+        Password: null,
         UserType:0,
         TeamID:"unassigned",
         Likes:[]
@@ -105,7 +107,7 @@ test('Creating Existing User', async function()
     await userController.saveUser(req, res);
     
     // expecting code 200 and a return of the original user
-    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toHaveBeenCalledWith(500);
     expect(res.send).toHaveBeenCalledWith(null);
 });
 
@@ -125,9 +127,11 @@ test('Read Information for an Existing User', async function()
     expect(res.send).toHaveBeenCalledWith(
     {
         UserName:"fred",
+        Password: null,
         UserType:0,
         TeamID:"unassigned",
-        Likes:[]
+        Likes:[],
+        _id:0
     });
 });
 
