@@ -1,6 +1,6 @@
-const userController = require('./UserController');
+const userController = require('../Controllers/UserController');
 const conIntercept = require('../Util/ControllerInterceptor');
-const mockDao = require('./MockUserDao');
+const mockDao = require('../Utils/MockUserDao');
 
 
 // set the DAO to the mock DAO
@@ -105,7 +105,7 @@ test('Creating Existing User', async function()
     await userController.saveUser(req, res);
     
     // expecting code 200 and a return of the original user
-    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toHaveBeenCalledWith(500);
     expect(res.send).toHaveBeenCalledWith(null);
 });
 

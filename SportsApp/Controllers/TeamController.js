@@ -7,7 +7,9 @@ exports.setDao = function(otherDao)
 
 /*
 function to create a team
-assumes at least a coach exists and that the array for players is empty
+assumes request has
+    coachID
+    teamName
 */
 exports.createTeam = async function(request, response)
 {
@@ -37,6 +39,32 @@ exports.createTeam = async function(request, response)
     {
         response.status(200);
         response.send( returnedTeam );
+    }
+}
+
+/*
+function to retrieve information about a team
+assumes the request has
+    teamName
+*/
+exports.getTeamInfo = async function(request, response)
+{
+    // get the team name from the request
+    let teamName = request.body.teamName;
+    
+    // retrieve the team information from the DAO
+    let team = await dao.readByName(teamName);
+    
+    // if successful, return the team information
+    if(team !== null)
+    {
+        response.status(200);
+        response.send(team);
+    }
+    else // if not successful, return 'null'
+    {
+        response.status(404);
+        response.send(null);
     }
 }
 
@@ -133,7 +161,7 @@ exports.removePlayer = async function(request, response)
         else // if the returned team is 'null', respond with 'null'
         {
             response.status(500);
-            response.send(null)
+            response.send(null);
         }
     }
     else // if read fails, set status to 500 and return null
