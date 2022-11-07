@@ -1,23 +1,47 @@
 
- teams =["A","B","C","D","E","F","G","H","I","J","K","L","M"]
+ teams =["A","B"]
 
-
- export default function teams() {
-
-    // Not done but sending team info to mongo
-    for (t of teams){
-
-        axios.post("http://localhost:4000/maketeam", t)
-
-    }
+ // import text,text input, touuchable and view
+ import { Text, TextInput, TouchableOpacity, View } from "react-native";
+ 
+ // import MainStyle
+ 
+ allTeams = []
+ 
+ const axios = require('axios');
+ 
+ 
+ export function GetTeams(){
+ 
+    return allTeams
+ 
+ }
+ 
+ export default function Teams() {
+ 
+    function mapTeams(t){
+ 
+       for (ar of t){
+ 
+          teamName = 
+          {
+             team: ar
+          };
+ 
     
-    // returns const teams
-    return (
-         
-
-        teams
-         
-         
-    );
-
+           allTeams.push(teamName)
+    
+       }
+    
+    
+    }
+ 
+ 
+ 
+    return(
+ 
+      mapTeams(teams)
+ 
+    )
+ 
  }

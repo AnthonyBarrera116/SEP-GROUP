@@ -14,7 +14,7 @@ const teamSchema = new mongoose.Schema({
     let potentialTeam = await teamModel.find({TeamName: team.TeamName}).lean();
     if(potentialTeam.length > 0)
     {
-        console.log("Team already exists");
+        console.log("Team \"" + team.TeamName + "\" already exists");
         console.log(JSON.stringify(potentialTeam));
         return null;
     }
@@ -51,7 +51,7 @@ exports.update = async function(team)
     let potentialteam = await teamModel.find({TeamName: team.TeamName}).lean();
     if(potentialteam.length > 0 && (potentialteam[0]._id != team._id || potentialteam.length > 1))
     {                                                               //Makes sure someone doesn't change their teamname to someone else's        
-        console.log("Team name already exists while updating");      //Takes into account where team updates their account and doesn't change name
+        console.log("Team \"" + team.TeamName + "\" already exists while updating");      //Takes into account where team updates their name and doesn't change name
         //if(potentialteam.length > 1)                              //Assumes potentialteam will have at most one team, since names should only be used once
         //{
             //console.log("Multiple teams with the same teamname.  Contact the admin.");
@@ -61,7 +61,7 @@ exports.update = async function(team)
     else
     {
         let id = { _id: team._id };
-        let updates = { $set: {TeamName: team.TeamName, PlayerIDs: team.PlayerIDs, CoachID: team.Coach}};
+        let updates = { $set: {TeamName: team.TeamName, PlayerIDs: team.PlayerIDs, CoachID: team.CoachID}};
         await teamModel.updateOne(id, updates);
         return await exports.read(team._id);
     }

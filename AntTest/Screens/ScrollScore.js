@@ -60,11 +60,14 @@ const styles = StyleSheet.create({
 // See games playing   
 export default function ScrollScore() {
 
+
     // real time date
     const date = new Date()
     
     // Obatins scehdule
     teamsGames = Sch()
+
+    console.log(teamsGames)
 
     // returns view
     return (
@@ -81,25 +84,24 @@ export default function ScrollScore() {
 
             <Text style = {{fontSize: 30}}>
                     
-                {(date.getMonth()+1) + " / " + (date.getDate() + 1)+ " / " + date.getFullYear()}
+                {(date.getMonth()) + " / " + (date.getDate()+ 1)+ " / " + date.getFullYear()}
                     
             </Text>
 
         </View>
-
 
         
         <ScrollView style = {{marginVertical:20,marginBottom:40}}>
                 
             {teamsGames.map((a,b)=>{
 
-                if((a[2] == date.getDate() + 1) && (a[3] == date.getMonth()) && (a[4] == date.getFullYear()) ){
+                if((a.Date.Day == date.getDate() + 1) && (a.Date.Month == date.getMonth()) && (a.Date.Year == date.getFullYear()) ){
 
                     return <View style={styles.Box}>
                                                         
                     <Text style={styles.Home}>
     
-                        {a[0]}
+                        {a.Home}
                                     
                     </Text>
     
@@ -108,7 +110,7 @@ export default function ScrollScore() {
     
                     <Text style={styles.Away}>
     
-                        {a[1]}
+                        {a.Away}
     
                     </Text>
     
