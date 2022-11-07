@@ -21,7 +21,7 @@ const GameSchema = new mongoose.Schema({
  exports.create = async function(Game){
     const mongoGame = new GameModel(Game);
     await mongoGame.save();
-    return await exports.read(mongoGame._id);
+    return await exports.readByID(mongoGame._id);
     //Used the read function because in tests it kept returning the _id in the beginning rather than end
  }
  
@@ -40,6 +40,11 @@ exports.readByHomeID = async function(id){
     return Game;
 }
 
+exports.readByAwayID = async function(id){
+    let Game = await GameModel.find({Away: id}).lean();
+    return Game;
+}
+
 exports.del = async function(id){
     let Game = await GameModel.findByIdAndDelete(id);
     return Game;
@@ -53,6 +58,6 @@ exports.update = async function(Game)
 {
     let id = { _id: Game._id };
     let updates = { $set: {Home: Game.Home, Away: Game.Away, HomeScore: Game.HomeScore, AwayScore: Game.AwayScore, Quarter: Game.Quarter, Time: Game.Time, Down: Game.Down, PlayByPlay: Game.PlayByPlay, CommentIDs: Game.CommentIDs, Likes: Game.Likes, DateTime: Game.DateTime}};
-    await Game.updateOne(id, updates);
+    await GameModel.updateOne(id, updates);
     return await exports.readByID(Game._id);
 }
