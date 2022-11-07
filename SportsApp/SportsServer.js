@@ -41,7 +41,8 @@ app.get('/dologin', userController.login); // logging in
 
 // team operations
 app.post('/maketeam', teamController.createTeam);
-//app.get('/getteam', teamController.);
+app.get('/getteam', teamController.getTeamInfo);
+app.get('/getallteams',teamController.getTeams);
 
 
 const server = app.listen(port, hostname, 

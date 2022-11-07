@@ -10,6 +10,7 @@ function to create a team
 assumes request has
     coachID
     teamName
+    playerIDs
 */
 exports.createTeam = async function(request, response)
 {
@@ -17,13 +18,14 @@ exports.createTeam = async function(request, response)
     // IMPORTANT - 'teamCoach' must be the _id value for the coach, NOT the username
     let teamCoach = request.body.coach;
     let teamName = request.body.teamName;
+    let playerIDs = request.body.playerIDs;
     
     // use the Team DAO to create a new team in the DB
     let newTeam =
     {
         TeamName: teamName,
-        PlayerIDs: [],
-        CoachID: teamCoach,
+        PlayerIDs: playerIDs,
+        CoachID: teamCoach
     };
     
     let returnedTeam = await dao.create(newTeam);
@@ -45,15 +47,15 @@ exports.createTeam = async function(request, response)
 /*
 function to retrieve information about a team
 assumes the request has
-    teamName
+    teamID
 */
 exports.getTeamInfo = async function(request, response)
 {
     // get the team name from the request
-    let teamName = request.body.teamName;
+    let teamID = request.body.teamID;
     
     // retrieve the team information from the DAO
-    let team = await dao.readByName(teamName);
+    let team = await dao.read(teamID);
     
     // if successful, return the team information
     if(team !== null)
@@ -65,6 +67,25 @@ exports.getTeamInfo = async function(request, response)
     {
         response.status(404);
         response.send(null);
+    }
+}
+
+/*
+function to retrieve information for all teams
+*/
+exports.getTeams = async function(request, response)
+{
+    let teams = await dao.readAll();
+    
+    if(teams === null)
+    {
+        response.status(404);
+        response.send(null);
+    }
+    else
+    {
+        response.status(200);
+        response.send(teams);
     }
 }
 
