@@ -9,7 +9,7 @@ const session = require('express-session');
 const cors = require('cors');
 const memorystore = require('memorystore')(session);
 const userController = require('./Controllers/UserController'); // creating the user controller
-const teamController = require('./Controllers/TeamController');
+const teamController = require('./Controllers/TeamController'); // creating the team controller
 
 const app = express(); //creates a new Express Application
 
@@ -41,6 +41,7 @@ app.get('/dologin', userController.login); // logging in
 
 // team operations
 app.post('/maketeam', teamController.createTeam);
+//app.get('/getteam', teamController.);
 
 
 const server = app.listen(port, hostname, 
