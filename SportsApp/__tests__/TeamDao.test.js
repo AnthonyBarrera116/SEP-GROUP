@@ -21,6 +21,8 @@ test('Create New team', async function()
     newteam.TeamName = "Supposed to already exist";
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
+    newteam.Wins = 2;
+    newteam.Losses = 1;
     newteam = await dao.create(newteam);
     let newteam2 = await dao.create(newteam);
     expect(newteam2).toBe(null);
@@ -35,6 +37,8 @@ test('Delete team', async function()
     newteam.TeamName = "The Developers";
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
+    newteam.Wins = 2;
+    newteam.Losses = 1;
     newteam = await dao.create(newteam);
     await dao.del(newteam._id);
     let newteams = await dao.readAll();
@@ -47,6 +51,8 @@ test('Delete All teams', async function()
     newteam.TeamName = "The Code Monkeys";
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
+    newteam.Wins = 2;
+    newteam.Losses = 1;
     await dao.create(newteam);
     newteam.TeamName = "The Code Baboons";
     await dao.create(newteam);
@@ -64,11 +70,15 @@ test('Update team', async function()
     newteam.TeamName = "The Students";
     newteam.PlayerIDs = ["Nick", "Erik", "Anthony", "Michael", "Joe"];
     newteam.CoachID = "482a";
+    newteam.Wins = 2;
+    newteam.Losses = 1;
     newteam = await dao.create(newteam);
     let updatedteam = newteam;
     updatedteam.TeamName = "The Updated Team";
     updatedteam.PlayerIDs = ["No one"];
     updatedteam.CoachID = "482b";
+    updatedteam.Wins = 3;
+    updatedteam.Losses = 2;
     await dao.update(updatedteam);
     expect(JSON.stringify(updatedteam)).toBe(JSON.stringify(await dao.read(newteam._id)));
 });
