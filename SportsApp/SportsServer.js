@@ -1,7 +1,7 @@
 // connecting to database
 require('dotenv').config();
 const dbcon = require('./Model/DbConnection');
-dbcon.connect(1); // add a '1' to connect to the test DB. remove otherwise
+dbcon.connect(); // add a '1' to connect to the test DB. remove otherwise
 
 const express = require('express'); //imports express
 const morgan = require('morgan'); //imports morgan
