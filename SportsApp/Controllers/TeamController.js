@@ -85,7 +85,8 @@ exports.getTeams = async function(request, response)
     else
     {
         response.status(200);
-        response.send(teams);
+        // TODO change this
+        response.send( {teams} );
     }
 }
 
@@ -126,7 +127,7 @@ exports.addPlayer = async function(request, response)
     }
     else // if the team to add to cannot be found, return null
     {
-        response.status(500);
+        response.status(404);
         response.send(null);
     }
 }
@@ -163,7 +164,7 @@ exports.removePlayer = async function(request, response)
             }
             i++;
         }
-        // if removeIndex is set properly
+        // if removeIndex is set properly. if the player is not found, then no change is made to the team
         if( removeIndex >= 0 )
         {
             // splice the list, remove the player that the index is at. the '1' is saying how many elements to remove, which is just 1 in this case
@@ -185,9 +186,9 @@ exports.removePlayer = async function(request, response)
             response.send(null);
         }
     }
-    else // if read fails, set status to 500 and return null
+    else // if read fails, set status to 404 and return null
     {
-        response.status(500);
+        response.status(404);
         response.send(null);
     }
 }
@@ -243,7 +244,7 @@ assumes request contains
 responds with full team information after coach update
 NOTE - there is a function in the userController that updates coach statuses. that function must be called with this one on the frontend, as this file is not concered with individual user-side happenings
 */
-exports.makeCoach = async function()
+exports.makeCoach = async function(request, response)
 {
     // get the teamID and playerID from the request body
     let teamID = request.body.teamID;
