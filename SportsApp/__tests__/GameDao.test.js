@@ -106,3 +106,89 @@ test('Update game', async function()
     await dao.update(updatedgame);
     expect(JSON.stringify(updatedgame)).toBe(JSON.stringify(await dao.readByID(newgame._id)));
 });
+
+test('Read home games', async function()
+{
+    await dao.deleteAll();
+    let newgame = {};
+    newgame.Home = "Phillies";
+    newgame.Away = "Astros";
+    newgame.HomeScore = 9001;
+    newgame.AwayScore = 9002;
+    newgame.Quarter = 9003;
+    newgame.Time = 9003;
+    newgame.Down = 9004;
+    newgame.PlayByPlay = ["9005"];
+    newgame.CommentIDs = ["1", "2", "3"];
+    newgame.Likes = ["4", "5", "6"];
+    newgame.DateTime = 1;
+    let homeGames = [await dao.create(newgame)];
+    newgame.DateTime = 3;
+    homeGames.push(await dao.create(newgame));
+    newgame.DateTime = 2;
+    homeGames.push(await dao.create(newgame));
+    newgame.Away = "Phillies";
+    newgame.Home = "Astros";
+    await dao.create(newgame);
+    await dao.create(newgame);
+    homeGames.sort((a, b) => parseFloat(a.DateTime) - parseFloat(b.DateTime));
+    expect(JSON.stringify(homeGames)).toBe(JSON.stringify(await dao.readByHomeID("Phillies")));
+});
+
+test('Read away games', async function()
+{
+    await dao.deleteAll();
+    let newgame = {};
+    newgame.Home = "Phillies";
+    newgame.Away = "Astros";
+    newgame.HomeScore = 9001;
+    newgame.AwayScore = 9002;
+    newgame.Quarter = 9003;
+    newgame.Time = 9003;
+    newgame.Down = 9004;
+    newgame.PlayByPlay = ["9005"];
+    newgame.CommentIDs = ["1", "2", "3"];
+    newgame.Likes = ["4", "5", "6"];
+    newgame.DateTime = 1;
+    let awayGames = [await dao.create(newgame)];
+    newgame.DateTime = 3;
+    awayGames.push(await dao.create(newgame));
+    newgame.DateTime = 2;
+    awayGames.push(await dao.create(newgame));
+    newgame.Away = "Phillies";
+    newgame.Home = "Astros";
+    await dao.create(newgame);
+    await dao.create(newgame);
+    awayGames.sort((a, b) => parseFloat(a.DateTime) - parseFloat(b.DateTime));
+    expect(JSON.stringify(awayGames)).toBe(JSON.stringify(await dao.readByAwayID("Astros")));
+});
+
+test('Read entire schedule', async function()
+{
+    await dao.deleteAll();
+    let newgame = {};
+    newgame.Home = "Phillies";
+    newgame.Away = "Astros";
+    newgame.HomeScore = 9001;
+    newgame.AwayScore = 9002;
+    newgame.Quarter = 9003;
+    newgame.Time = 9003;
+    newgame.Down = 9004;
+    newgame.PlayByPlay = ["9005"];
+    newgame.CommentIDs = ["1", "2", "3"];
+    newgame.Likes = ["4", "5", "6"];
+    newgame.DateTime = 1;
+    let schedule = [await dao.create(newgame)];
+    newgame.DateTime = 3;
+    schedule.push(await dao.create(newgame));
+    newgame.DateTime = 2;
+    schedule.push(await dao.create(newgame));
+    newgame.Away = "Phillies";
+    newgame.Home = "Astros";
+    newgame.DateTime = 5;
+    schedule.push(await dao.create(newgame));
+    newgame.DateTime = 4;
+    schedule.push(await dao.create(newgame));
+    schedule.sort((a, b) => parseFloat(a.DateTime) - parseFloat(b.DateTime));
+    expect(JSON.stringify(schedule)).toBe(JSON.stringify(await dao.readSchedule("Astros")));
+});

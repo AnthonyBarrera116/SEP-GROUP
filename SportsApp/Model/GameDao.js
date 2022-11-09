@@ -36,13 +36,23 @@ const GameSchema = new mongoose.Schema({
 }
 
 exports.readByHomeID = async function(id){
-    let Game = await GameModel.find({Home: id}).lean();
-    return Game;
+    let games = await GameModel.find({Home: id}).lean();
+    games.sort((a, b) => parseFloat(a.DateTime) - parseFloat(b.DateTime));
+    return games;
 }
 
 exports.readByAwayID = async function(id){
-    let Game = await GameModel.find({Away: id}).lean();
-    return Game;
+    let games = await GameModel.find({Away: id}).lean();
+    games.sort((a, b) => parseFloat(a.DateTime) - parseFloat(b.DateTime));
+    return games;
+}
+
+exports.readSchedule = async function(id){// Returns chronological schedule
+    let awayGames = await exports.readByAwayID(id);
+    let homeGames = await exports.readByHomeID(id);
+    let schedule = awayGames.concat(homeGames);
+    schedule.sort((a, b) => parseFloat(a.DateTime) - parseFloat(b.DateTime));
+    return schedule;
 }
 
 exports.del = async function(id){
