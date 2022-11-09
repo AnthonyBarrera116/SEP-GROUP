@@ -279,3 +279,27 @@ exports.makeCoach = async function(request, response)
         response.send(null);
     }
 }
+
+/*
+function to update a team
+assumes the request has all information for the team
+*/
+exports.updateTeam = async function(request, response)
+{
+    // get the team from the request
+    let team = request.body.team;
+    
+    // use the DAO update function to update the team information
+    let returnedTeam = await dao.update(team);
+    
+    if(returnedTeam !== null)
+    {
+        response.status(200);
+        response.send(returnedTeam)
+    }
+    else
+    {
+        response.status(404);
+        response.send(null);
+    }
+}

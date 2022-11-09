@@ -50,6 +50,8 @@ test('Creating a team that already exists', async function()
     expect(response.send).toHaveBeenCalledWith(null);
 });
 
+
+
 test('Getting an existing team', async function()
 {
     // set up request and response
@@ -98,24 +100,30 @@ test('Getting all existing teams', async function()
     
     await teamController.getTeams(request, response);
     
+    // expects a JSON object that contains a list
     expect(response.status).toHaveBeenCalledWith(200);
     expect(response.send).toHaveBeenCalledWith(
-    [
-        {
-            _id:"abc",
-            TeamName: "existing team",
-            PlayerIDs: ["testp1", "testp2"],
-            CoachID: "coach"
-        },
-        {
-            _id:"def",
-            TeamName: "other existing team",
-            PlayerIDs: ["testp3", "testp4"],
-            CoachID: "other coach"
-        },
-        
-    ]);
+    {
+    "teams":
+        [
+            {
+                _id:"abc",
+                TeamName: "existing team",
+                PlayerIDs: ["testp1", "testp2"],
+                CoachID: "coach"
+            },
+            {
+                _id:"def",
+                TeamName: "other existing team",
+                PlayerIDs: ["testp3", "testp4"],
+                CoachID: "other coach"
+            },
+            
+        ]
+    });
 })
+
+
 
 test('Adding a player to an existing team', async function()
 {
@@ -158,6 +166,8 @@ test('Adding a player to a non-existing team', async function()
     expect(response.status).toHaveBeenCalledWith(404);
     expect(response.send).toHaveBeenCalledWith(null);
 });
+
+
 
 test('Removing a player from an existing team', async function()
 {
@@ -225,6 +235,8 @@ test('Removing a player from a non-existing team', async function()
     expect(response.send).toHaveBeenCalledWith(null);
 });
 
+
+
 test('Removing a coach from an existing team', async function()
 {
     // set up request and response
@@ -264,6 +276,8 @@ test('Removing a coach from a non-existing team', async function()
     expect(response.status).toHaveBeenCalledWith(404);
     expect(response.send).toHaveBeenCalledWith(null);
 });
+
+
 
 test('Changing an existing team\'s coach', async function()
 {
