@@ -1,8 +1,7 @@
 /*
-this file is meant to handle requests from coaches sent to players for the player to join the 
-team that the coach is the leader of
+this file is meant to handle requests from players to become the coach for a team
 */
-let dao = require("../Model/PlayerRequestDao");
+let dao = require("../Model/CoachRequestDao");
 
 // sets the DAO. used for testing
 exports.setDao = function(otherDao)
@@ -11,25 +10,22 @@ exports.setDao = function(otherDao)
 }
 
 /*
-creates a request sent from a coach to a player
-assumes the request contains:
-    coach ID
-    player ID
-    team ID
-    reason for request
+creates the request to the coach from the player
+assumes the request has
+    playerID
+    teamID
+    reason
 responds with the request as it is sent to the DB if it goes through
 */
 exports.create = async function(request, response)
 {
-    let coachID = request.body.coachID;
     let playerID = request.body.playerID;
     let teamID = request.body.teamID;
     let reason = request.body.reason;
     
     let newRequest = 
     {
-        CoachID: coachID,
-        PlayerID: playerID,
+        RequesterID: playerID,
         TeamID: teamID,
         Reason: reason
     }
@@ -51,28 +47,25 @@ exports.create = async function(request, response)
 }
 
 /*
-function to get all requests for a given player
-assumes request contains
-    player ID
-responds with all requests for the given player
+function to retrieve all requests
+the user must be logged in to an admin account to receive the requests
 */
-exports.getPlayerRequests = async function(request, response)
+exports.getAllRequests = async function(request, response)
 {
-    // get the playerID from the request body
-    let playerID = request.body.playerID;
+    // get the logged in user from the session
+    let loggedUser = request.session.user;
     
-    // send request to the DAO with all responses
-    let allRequests = await dao.readByPlayerID(playerID);
-    
-    //if DAO response is not null, send back all responses even if they're empty
-    if(allRequests !== null)
+    // if the user is an admin, pull requests
+    if(loggedUser !== null && loggedUser.UserType === 2)
     {
-        response.status(202);
-        response.send(allRequests);
+        let allReqs = await dao.readAll();
+        
+        response.status(200);
+        response.send(allReqs);
     }
-    else
+    else // else send back 403 and null
     {
-        response.status(500);
+        response.status(403);
         response.send(null);
     }
 }
@@ -81,19 +74,29 @@ exports.getPlayerRequests = async function(request, response)
 function to delete a request for a player
 assumes the request contains
     player request ID
+    session
 responds with the deleted request upon success
+will check the session for the logged-in user to see if they are an admin
 */
 exports.deleteRequest = async function(request, response)
 {
     // get the ID from the request
     let requestID = request.body.requestID;
     
-    // delete the request from the DAO
-    let deletedRequest = await dao.del(requestID);
-    
-    // status 200 means success and send back deleted request
-    response.status(200);
-    response.send(deletedRequest);
+    // delete the request from the DAO if the user is an admin
+    if(request.session.user !== null && request.session.user.UserType == 2)
+    {
+        let deletedRequest = await dao.del(requestID);
+        
+        // status 200 means success and send back deleted request
+        response.status(200);
+        response.send(deletedRequest);
+    }
+    else // if the user is either not logged in or not an admin, respond with 403 and null
+    {
+        response.status(403);
+        response.send(null);
+    }
 }
 
 /*
@@ -101,6 +104,7 @@ function to edit/update a request
 assumes the request contains
     a request (which will be called 'req' to avoid confusion)
 responds with the updated request upon success
+will check the session for the logged-in user to see if they are an admin
 */
 exports.editRequest = async function(request, response)
 {
