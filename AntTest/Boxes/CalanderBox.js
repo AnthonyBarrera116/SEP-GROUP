@@ -10,58 +10,58 @@ export default function CalanderBox(){
     // Style Sheet for 2 boxes
    const styles = StyleSheet.create({
     
-        // Rectangle box boarder
-        RectangleShapeView1: {
-            alignItems: "center",
-            marginTop: 30,
-            width: 180 * 2,
-            height: 550,
-            backgroundColor: '#000000',
-        
-        },
-
         // Inside Box
-        RectangleShapeView2: {
-            marginTop: 5,
-            width: 170 * 2,
-            height: 540,
-            backgroundColor: '#f0ffff',
+        RectangleShapeView: {
+            margin: 20,
+            height: 675,
+            color: 'white',
+            backgroundColor: '#20232a',
+            borderColor: 'blue',
+            borderWidth: 2,
+            textAlign: "center"
+        },
+        topBar:{
+
+            width: 500 * 2,
+            height: 50,
+            fontSize: 40,
+            textAlign: 'center',
+            color: 'white',
+            backgroundColor: '#20232a',
+            flexDirection:'row'
+            
+    
+        },
+        games:{
         
-        }
+            color: 'white',
+            fontSize: 20,
+            textAlign:'right',
+            marginTop:-25,
+    
+        },
+        
 
     });
     
     // Returns Box
     return (<>   
 
-        <View style={{alignItems:"center",}}>
+    <View>
+    <View style = {{alignItems:"center"}}>
 
-            <Text> 
+    <Text style={styles.topBar}>Calander
+    
+    </Text>
+    </View>
 
-                Calander 
+    <View style={styles.RectangleShapeView}>
 
-            </Text>
+        <Text style = {styles.games}>GIIGIH</Text>
 
-            <View style={{alignItems:"center"}}>
+    </View>
 
-                <View style={styles.RectangleShapeView1}>
-                        
-                    <View style={styles.RectangleShapeView2}>
-
-                            
-                        <Text style = {{textAlign:'center'}}> 
-
-                            NO GAMES 
-
-                        </Text>
-
-                    </View>
-                    
-                </View>
-                
-            </View>
-              
-        </View>
+    </View>
 
     </>);
 

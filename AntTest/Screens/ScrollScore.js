@@ -14,7 +14,6 @@ import Sch from "../Schedule"
 const styles = StyleSheet.create({
 
     Box: {
-       
         margin: 20,
         height: 100,
         color: 'white',
@@ -67,7 +66,7 @@ export default function ScrollScore() {
     // Obatins scehdule
     teamsGames = Sch()
 
-    console.log(teamsGames)
+    //console.log(teamsGames)
 
     // returns view
     return (

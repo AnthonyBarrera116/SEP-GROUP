@@ -112,6 +112,7 @@ exports.login = async function(request, response)
     // user isn't found or the passwords don't match
     else
     {
+        response.status(404);
         response.send(null);
     }
     

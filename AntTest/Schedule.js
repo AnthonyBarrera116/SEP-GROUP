@@ -1,36 +1,55 @@
 // Getting teams js
-import Teams, {GetTeams}from "./teams";
 import  Text from 'react-native';
+
+import { useState ,useEffect} from 'react';
 
 
 // Schedule maker
 
+const axios = require('axios');
 
 export default function Schedule() {
-
-    
-    Teams.call(GetTeams())
-
+    arrayOfTeams = []
+    const [posts, setPosts] = useState([]);
     // Gets teams form teams js
-    arrayOfTeams = GetTeams()
+    useEffect(() => {
+        axios.get("http://localhost:4000/getallteams")
+        .then(response => {
+            
+            setPosts(response.data);
+            
+        })
+        
+        .catch((error) => 
+        {
 
+            console.log(error);
+
+        });
+    }, []);
     // date real time
     const date = new Date();
     // array with teams matched up
     teamMatchUps = []
+
+    for(x = 0; x < posts.length;x++){
+
+        arrayOfTeams.push(posts[x].TeamName)
+
+    }
 
     // Setting all matchups with realdate 
     for (a of arrayOfTeams){
 
         for (b of arrayOfTeams){
 
-            if (a.team !== b.team){
+            if (a !== b){
 
 
                 let Sch = 
                 {
-                    Home: a.team,
-                    Away: b.team,
+                    Home: a,
+                    Away: b,
                     Date: {Day: date.getDate(), Month: date.getMonth(), Year: date.getFullYear()}
                 };
 
@@ -88,8 +107,8 @@ export default function Schedule() {
                 
         }
     }
-
-    return (teamMatchUps);
+    console.log(teamMatchUps)
+    return teamMatchUps;
 
     
       

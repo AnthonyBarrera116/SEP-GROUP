@@ -5,26 +5,45 @@ dbcon.connect(1); // add a '1' to connect to the test DB. remove otherwise
 
 const express = require('express'); //imports express
 const morgan = require('morgan'); //imports morgan
+const session = require('express-session');
+const cors = require('cors');
+const memorystore = require('memorystore')(session);
+const userController = require('./Controllers/UserController'); // creating the user controller
+const teamController = require('./Controllers/TeamController'); // creating the team controller
 
 const app = express(); //creates a new Express Application
-
-const userController = require('./Controllers/UserController'); // creating the controller
 
 app.use( morgan('dev') );
 app.use( express.urlencoded({extended:true}) );
 app.use( express.json() );
+app.use( cors() );
+
+app.use( session(
+{
+    secret:'Groundwater - Simplistic - Virtual',
+    cookie: {maxAge: 86400000 }, // = 1000*60*60*24 = 24Hours
+    store: new memorystore({checkPeriod:86400000}),
+    resave: false,
+    saveUninitialized: true
+}));
 
 // setting up localhost
 let hostname = "localhost";
 let port = 4000;
 
 
-//operations to interact with the database. functions defined in the controller
-app.post('/user', userController.saveUser);
-app.get('/user', userController.login);
+//operations to interact with the database. functions defined in the controllers
 
-app.post('/user', userController.saveUser);
-app.get('/user', userController.login);
+// user operations
+app.post('/user', userController.saveUser); // creating a new user
+app.get('/user', userController.getUserInfo); // getting user information
+app.get('/dologin', userController.login); // logging in
+
+// team operations
+app.post('/maketeam', teamController.createTeam);
+app.get('/getteam', teamController.getTeamInfo);
+app.get('/getallteams',teamController.getTeams);
+
 
 const server = app.listen(port, hostname, 
     function()
