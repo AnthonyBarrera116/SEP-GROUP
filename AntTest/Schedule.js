@@ -1,5 +1,5 @@
 // Getting teams js
-import  Text from 'react-native';
+
 
 import { useState ,useEffect} from 'react';
 

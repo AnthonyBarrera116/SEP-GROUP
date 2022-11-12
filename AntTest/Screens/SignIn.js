@@ -1,41 +1,63 @@
 // Imports React
-import React from "react";
+import React, { useEffect } from "react";
 
 // Import Features from React-Native
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View,useState} from "react-native";
 
 // Import Style of Where eveything goes
 import MainStyle from "../Styles/MainStyle.style";
 
 // Import FormStyle for Sign In buttons and log in
 import FormStyle from "../Styles/FormStyle";
+import { response } from "express";
+
+const axios = require('axios');
 
 // Testing of logging in 
 const e = 'Aj';
 const pass ='1234';
-const co = 0;
-const team = 0;
 
 // Function For Logging In
 export default function SignIn({navigation}){
 
   // Const Variable for email
-  const [email, setEmail] = React.useState("");
+  const [userName, setName] = React.useState("");
 
   // Const variable for Password
   const [password, setPassword] = React.useState("");
 
+  
+  const [userGet, setUser] =  React.useState([]);
     // Function for handling checking user and password 
-    function handleSubmit(pEmail, pPwd){
-      
-      // If email is correct
-      if(e === pEmail){
+    function handleSubmit(pUser, pPwd){
 
-        // If Password is correct
-        if(pass === pPwd){
+      
+
+      const user = 
+      {
+  
+          username: pUser,
+          password: pPwd,
+  
+  
+      }
+          axios.post("http://localhost:4000/dologin",user)
+          .then((response) =>  
+            //console.log(JSON.stringify( response.data)),
+            setUser(response.data)
+          )
+          .catch((error) => 
+          {
+              console.log(error);
+          });
+       
+          console.log(userGet["TeamID"])
+
+      // If email is correct
+      if(userGet !== null){
 
           // If coach
-          if(co === 1){
+          if( userGet["UseType"] === 1){
               
             // Navigate Profile style (DOESN'T WORK)
             navigation.navigate('CoachProfile') 
@@ -43,7 +65,7 @@ export default function SignIn({navigation}){
           }
 
           // If they are on a Team
-          else if(team === 1){
+          else if( userGet["TeamID"] !== "unassigned"){
 
             // Navigate Profile style with team (DOESN'T WORK)
             navigation.navigate('ProfileWithTeam') 
@@ -59,23 +81,15 @@ export default function SignIn({navigation}){
 
           }
 
-        }
-        
+      
         // Incorrect Password
-        else{
-
-          // Alert for wrong Password
-          alert('INCORRECT PASSWORD')
-
-        }
-
       }
 
       // Incorrect Email
       else{
 
         // Alert for wrong Password
-        alert('INCORRECT EMAIL')
+        alert('INCORRECT EMAIL/PASSWORD')
 
       }
     
@@ -96,13 +110,13 @@ export default function SignIn({navigation}){
 
           <Text style={FormStyle.label}>Email:</Text>
             
-          <TextInput onChangeText={setEmail} style={FormStyle.input} autoCapitalize={false} />
+          <TextInput onChangeText={setName} style={FormStyle.input} autoCapitalize={false} />
 
           <Text style={FormStyle.label}>Password:</Text>
 
           <TextInput onChangeText={setPassword} style={FormStyle.input} secureTextEntry={true} />
 
-          <TouchableOpacity style={FormStyle.formButton} onPress={()=> handleSubmit(email,password)}>
+          <TouchableOpacity style={FormStyle.formButton} onPress={()=> handleSubmit(userName,password)}>
 
           <Text style={FormStyle.formButtonText}> Submit </Text>
 

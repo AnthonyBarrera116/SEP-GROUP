@@ -37,7 +37,7 @@ let port = 4000;
 // user operations
 app.post('/user', userController.saveUser); // creating a new user
 app.get('/user', userController.getUserInfo); // getting user information
-app.get('/dologin', userController.login); // logging in
+app.post('/dologin', userController.login); // logging in
 
 // team operations
 app.post('/maketeam', teamController.createTeam);

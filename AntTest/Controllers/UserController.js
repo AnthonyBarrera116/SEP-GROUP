@@ -88,17 +88,15 @@ exports.login = async function(request, response)
     let username = request.body.username;
     let password = request.body.password;
     
-    //console.log(username);
-    //console.log(password);
     
     // get the user based on the username from the DAO
     let user = await dao.readByUsername(username);
     
-    //console.log(user);
+    
     
     // if the user isn't null and the passwords match, set status to 200 and return the user
     // don't return the password field, just the other information
-    if(user !== null && user.Password === password)
+    if(user === user.username && user.Password === password)
     {
         response.status(200);
         
