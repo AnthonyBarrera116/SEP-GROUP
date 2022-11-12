@@ -157,7 +157,7 @@ exports.loggedUser = function(request, response)
 {
     response.status(200);
     response.send( request.session.user ); // send the logged in user
-    response.end();
+    //response.end();
 }
 
 /*
@@ -237,7 +237,7 @@ exports.makeCoach = async function(request, response)
     let teamID = request.body.TeamID;
     
     // retrieve user from the DAO
-    let user = await dao.read(playerID);
+    let user = await dao.readById(playerID);
     
     // if the read succeeds, update the user. if not, respond with 'null'
     if (user !== null)
@@ -252,6 +252,7 @@ exports.makeCoach = async function(request, response)
         // if the update succeeds, return the updated user, else return null
         if( updatedUser !== null )
         {
+            user.Password = null;
             response.status(200);
             response.send(updatedUser);
         }
@@ -281,7 +282,7 @@ exports.removeCoach = async function(request, response)
     let playerID = request.body.PlayerID;
     
     // retrieve player information from DAO
-    let user = await dao.read(playerID);
+    let user = await dao.readById(playerID);
     
     // if the DAO read responds with a player, change their status to '0'
     if(user !== null)

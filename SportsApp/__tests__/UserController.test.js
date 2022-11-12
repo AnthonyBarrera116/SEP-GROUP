@@ -238,3 +238,173 @@ test('Deleting Using an Invalid ID', async function()
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.send).toHaveBeenCalledWith(null);
 });
+
+
+test('Read Information for an Existing User via ID', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    // setting up request
+    req.params.id = 0;
+    
+    await userController.getIDInfo(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(
+    {
+                _id:0,
+        UserName:"fred",
+        Password:null,
+        UserType:0,
+        TeamID:"unassigned",
+        Likes:[]
+    });
+});
+
+test('Read Information for a non-existing user via ID', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    // setting up request
+    req.params.id = 5;
+    
+    await userController.getIDInfo(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.send).toHaveBeenCalledWith(null);
+});
+
+test('Getting a logged in user\'s information', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.session.user = 
+    {
+        _id:0,
+        UserName:"fred",
+        Password:"fredsPW",
+        UserType:0,
+        TeamID:"unassigned",
+        Likes:[]
+    };
+    
+    await userController.loggedUser(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(
+    {
+        _id:0,
+        UserName:"fred",
+        Password:"fredsPW",
+        UserType:0,
+        TeamID:"unassigned",
+        Likes:[]
+    });
+});
+
+test('Getting a logged in user\'s information when they are not logged in', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.session.user = null;
+    
+    await userController.loggedUser(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(null);
+});
+
+test('Making a non-coach a coach', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.body.PlayerID = 0;
+    req.body.TeamID = "newteam";
+    
+    await userController.makeCoach(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(
+    {
+        _id:0,
+        UserName:"fred",
+        Password:null,
+        UserType:1,
+        TeamID:"newteam",
+        Likes:[]
+    });
+});
+
+test('Making a non-existing player a coach', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.body.PlayerID = 5;
+    req.body.TeamID = "newteam";
+    
+    await userController.makeCoach(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.send).toHaveBeenCalledWith(null);
+});
+
+test('Removing coach status from an existing player', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.body.PlayerID = 1;
+    
+    await userController.removeCoach(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(
+    {
+        _id:1,
+        UserName:"badcoach",
+        Password:null,
+        UserType:0,
+        TeamID:"badteam",
+        Likes:[]
+    });
+});
+
+test('Logging a logged-in user out', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.session.user = 
+    {
+        _id:0,
+        UserName:"fred",
+        Password:"fredsPW",
+        UserType:0,
+        TeamID:"unassigned",
+        Likes:[]
+    };
+    
+    await userController.logout(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(null);
+});
+
+test('Logging out when no one is logged in', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.session.user = null
+    
+    await userController.logout(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(null);
+});
