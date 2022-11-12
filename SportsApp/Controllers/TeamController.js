@@ -25,7 +25,9 @@ exports.createTeam = async function(request, response)
     {
         TeamName: teamName,
         PlayerIDs: playerIDs,
-        CoachID: teamCoach
+        CoachID: teamCoach,
+        Wins:0,
+        Losses:0
     };
     
     let returnedTeam = await dao.create(newTeam);
@@ -52,7 +54,7 @@ assumes the request has
 exports.getTeamInfo = async function(request, response)
 {
     // get the team name from the request
-    let teamID = request.body.teamID;
+    let teamID = request.params.id;
     
     // retrieve the team information from the DAO
     let team = await dao.read(teamID);
