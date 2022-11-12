@@ -15,14 +15,14 @@ exports.saveUser = async function(request, response)
     //console.log("i\'m running this from the controller!");
     //console.log( JSON.stringify(request.body) );
     
-    // extract individual elements, hash password
-    let username = request.body.username;
-    let password = request.body.password;
-    let teamID = request.body.teamID;
+    // extract individual elements, hash Password
+    let username = request.body.UserName;
+    let password = request.body.Password;
+    let teamID = request.body.TeamID;
     
-    //console.log( username );
-    //console.log( password );
-    //console.log( teamID );
+    //console.log( UserName );
+    //console.log( Password );
+    //console.log( TeamID );
     
     // building the user based on the info from the request
     let user = 
@@ -36,10 +36,10 @@ exports.saveUser = async function(request, response)
     
     // creating the user with the dao. if the user already exists, the dao returns 'null', else it returns the user
     let returnedUser = await dao.create( user );
-    // if we get a user, send their information minus their password
+    // if we get a user, send their information minus their Password
     if (returnedUser !== null)
     {
-        returnedUser.Password = null; // set the password to 'null' for security
+        returnedUser.Password = null; // set the Password to 'null' for security
         
         // send 200 status, indicating we connected
         response.status(200);
@@ -55,17 +55,21 @@ exports.saveUser = async function(request, response)
     }
 }
 
+/*
+gets information from a user based on their username
+accepts `username` as a parameter
+*/
 exports.getUserInfo = async function(request, response)
 {
-    // get the username from the request body
-    let username = request.body.username;
+    // get the UserName from the request body
+    let username = request.params.username;
     
     // get the user information
     let userInfo = await dao.readByUsername(username);
     
     // if the user isn't null from the DAO
     if (userInfo !== null){
-        // set password to 'null' before returning
+        // set Password to 'null' before returning
         userInfo.Password = null;
         response.status(200);
         response.send(userInfo);
@@ -80,24 +84,52 @@ exports.getUserInfo = async function(request, response)
 }
 
 /*
-gets the user based on the username and password and saves them in the session
+gets a user from their database ID
+accepts their ID as a parameter in the URI
+*/
+exports.getIDInfo = async function(request, response)
+{
+    // get the UserName from the request body
+    let username = request.params.id;
+    
+    // get the user information
+    let userInfo = await dao.readById(username);
+    
+    // if the user isn't null from the DAO
+    if (userInfo !== null){
+        // set Password to 'null' before returning
+        userInfo.Password = null;
+        response.status(200);
+        response.send(userInfo);
+    }
+    // user is not found
+    else
+    {
+        // send 404 status and null
+        response.status(404);
+        response.send(null);
+    }
+}
+
+/*
+gets the user based on the UserName and Password and saves them in the session
 */
 exports.login = async function(request, response)
 {
-    // get the username and password from the request
-    let username = request.body.username;
-    let password = request.body.password;
+    // get the UserName and Password from the request
+    let username = request.body.UserName;
+    let password = request.body.Password;
     
     //console.log(username);
     //console.log(password);
     
-    // get the user based on the username from the DAO
+    // get the user based on the UserName from the DAO
     let user = await dao.readByUsername(username);
     
     //console.log(user);
     
-    // if the user isn't null and the passwords match, set status to 200 and return the user
-    // don't return the password field, just the other information
+    // if the user isn't null and the Passwords match, set status to 200 and return the user
+    // don't return the Password field, just the other information
     if(user !== null && user.Password === password)
     {
         response.status(200);
@@ -109,7 +141,7 @@ exports.login = async function(request, response)
         // send the logged in user back to the app
         response.send(user);
     }
-    // user isn't found or the passwords don't match
+    // user isn't found or the Passwords don't match
     else
     {
         response.status(404);
@@ -126,6 +158,16 @@ exports.loggedUser = function(request, response)
     response.status(200);
     response.send( request.session.user ); // send the logged in user
     response.end();
+}
+
+/*
+removes the user from the session
+*/
+exports.logout = function(request, response)
+{
+    request.session.user = null;
+    response.status(200);
+    response.send(null);
 }
 
 exports.updateUser = async function(request, response)
@@ -150,7 +192,7 @@ exports.updateUser = async function(request, response)
     }
     else // update is successful
     {
-        // send info without sending the password information
+        // send info without sending the Password information
         let updatedUserInfo = 
         {
             _id: updatedUser._id,
@@ -185,15 +227,14 @@ function to make a user into a coach
 assumes this is called after a request to become a coach is fulfilled
 assumes request has
     playerID
-    teamID
-
+    TeamID
 this function, on the frontend, should be called with an equivalent function in the teamController to do both things at once so that the team information is updated at the same time as the user information
 */
 exports.makeCoach = async function(request, response)
 {
     // get the information from the request body
-    let playerID = request.body.playerID;
-    let teamID = request.body.teamID;
+    let playerID = request.body.PlayerID;
+    let teamID = request.body.TeamID;
     
     // retrieve user from the DAO
     let user = await dao.read(playerID);
@@ -237,7 +278,7 @@ responds with player information after the update
 exports.removeCoach = async function(request, response)
 {
     // retrieve ID from request body
-    let playerID = request.body.playerID;
+    let playerID = request.body.PlayerID;
     
     // retrieve player information from DAO
     let user = await dao.read(playerID);

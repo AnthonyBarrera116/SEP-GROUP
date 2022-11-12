@@ -36,13 +36,17 @@ let port = 4000;
 
 // user operations
 app.post('/user', userController.saveUser); // creating a new user
-app.get('/user', userController.getUserInfo); // getting user information
-app.get('/dologin', userController.login); // logging in
+app.get('/user/:username', userController.getUserInfo); // getting user information from username
+app.get('/user/:id', userController.getIDInfo); // getting user information from the ID
+app.post('/dologin', userController.login); // logging in
+app.get('/getlogged', userController.loggedUser); // get the user currently logged into the session
+app.get('/logout', userController.logout); // log the user out of the session
+app.post('/updateuser', userController.updateUser); // POST request to change the user's information
 
 // team operations
-app.post('/maketeam', teamController.createTeam);
-app.get('/getteam', teamController.getTeamInfo);
-app.get('/getallteams',teamController.getTeams);
+app.post('/maketeam', teamController.createTeam); // create a new team
+app.get('/getteam/:id', teamController.getTeamInfo); // get a specific team by their Database ID
+app.get('/getallteams',teamController.getTeams); // get all teams in the DB
 
 
 const server = app.listen(port, hostname, 
