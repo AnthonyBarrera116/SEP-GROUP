@@ -384,7 +384,7 @@ test('Logging a logged-in user out', async function()
     {
         _id:0,
         UserName:"fred",
-        Password:"fredsPW",
+        Password:null,
         UserType:0,
         TeamID:"unassigned",
         Likes:[]

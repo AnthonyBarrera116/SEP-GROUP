@@ -47,7 +47,7 @@ exports.readByUsername = async function(username)
     }
 }
 
-exports.readByUsername = async function(username)
+exports.readById = async function(id)
 {
     // creating a user object that already exists
     let existingUser = 
@@ -60,10 +60,25 @@ exports.readByUsername = async function(username)
         Likes:[]
     }
     
+    // creating a coach object to remove their status
+    let badCoach =
+    {
+        _id:1,
+        UserName:"badcoach",
+        Password:"badcoachPW",
+        UserType:1,
+        TeamID:"badteam",
+        Likes:[]
+    }
+    
     // if the username matches that of the existing user, return the user, else return null
-    if(username === existingUser.UserName)
+    if(id === existingUser._id)
     {
         return existingUser;
+    }
+    else if(id === badCoach._id)
+    {
+        return badCoach;
     }
     else
     {
@@ -84,12 +99,28 @@ exports.update = async function(user)
         Likes:[]
     }
     
+    // creating a coach object to remove their status
+    let badCoach =
+    {
+        _id:1,
+        UserName:"badcoach",
+        Password:"badcoachPW",
+        UserType:1,
+        TeamID:"badteam",
+        Likes:[]
+    }
+    
     // the only things that can't be changed are the username and id
     if(user.UserName === existingUser.UserName &&
         user._id === existingUser._id)
     {
         existingUser = user;
         return existingUser;
+    }
+    else if(user._id === badCoach._id)
+    {
+        badCoach = user;
+        return badCoach;
     }
     else
     {

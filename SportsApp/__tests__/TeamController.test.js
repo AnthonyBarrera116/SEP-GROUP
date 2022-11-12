@@ -59,7 +59,7 @@ test('Getting an existing team', async function()
     let response = conIntercept.mockResponse();
     
     // set up request data
-    request.body.teamID = "abc";
+    request.params.id = "abc";
     
     // call the controller function
     await teamController.getTeamInfo(request, response);
@@ -82,7 +82,7 @@ test('Getting a non-existing team', async function()
     let response = conIntercept.mockResponse();
     
     // set up request data
-    request.body.teamID = "def";
+    request.params.id = "def";
     
     // call the controller function
     await teamController.getTeamInfo(request, response);
@@ -319,4 +319,48 @@ test('Changing a non-existing team\'s coach', async function()
     // expecting status 404 and sending null
     expect(response.status).toHaveBeenCalledWith(404);
     expect(response.send).toHaveBeenCalledWith(null);
+});
+
+test('Updating an existing team', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.body.team = 
+    {
+        _id:"abc",
+        TeamName: "existing team",
+        PlayerIDs: ["testp1", "testp2", "testp3"],
+        CoachID: "differentcoach"
+    };
+    
+    await teamController.updateTeam(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(
+    {
+        _id:"abc",
+        TeamName: "existing team",
+        PlayerIDs: ["testp1", "testp2", "testp3"],
+        CoachID: "differentcoach"
+    });
+});
+
+test('Updating a non-existing team', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.body.team = 
+    {
+        _id:"def",
+        TeamName: "non-existing team",
+        PlayerIDs: ["fakep1", "fakep2", "fakep3"],
+        CoachID: "fakecoach"
+    };
+    
+    await teamController.updateTeam(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.send).toHaveBeenCalledWith(null);
 });
