@@ -14,8 +14,8 @@ test('Login With Existing User, Correct Credentials', async function()
 {
     // setting up request for existing user
     let req = conIntercept.mockRequest();
-    req.body.username = "fred";
-    req.body.password = "fredsPW";
+    req.body.UserName = "fred";
+    req.body.Password = "fredsPW";
     // set up response
     let res = conIntercept.mockResponse();
     
@@ -39,8 +39,8 @@ test('Login With Non-Existing User', async function()
 {
     // setting up request for existing user
     let req = conIntercept.mockRequest();
-    req.body.username = "marty";
-    req.body.password = "martysPW";
+    req.body.UserName = "marty";
+    req.body.Password = "martysPW";
     // set up response
     let res = conIntercept.mockResponse();
     
@@ -56,8 +56,8 @@ test('Existing User, Incorrect Password', async function()
 {
     // setting up request for existing user
     let req = conIntercept.mockRequest();
-    req.body.username = "fred";
-    req.body.password = "notfredsPW";
+    req.body.UserName = "fred";
+    req.body.Password = "notfredsPW";
     // set up response
     let res = conIntercept.mockResponse();
     
@@ -73,9 +73,9 @@ test('Creating Non-Existing User', async function()
 {
     // setting up request for existing user
     let req = conIntercept.mockRequest();
-    req.body.username = "jacob";
-    req.body.password = "jacobsPW";
-    req.body.teamID = "unassigned";
+    req.body.UserName = "jacob";
+    req.body.Password = "jacobsPW";
+    req.body.TeamID = "unassigned";
     // set up response
     let res = conIntercept.mockResponse();
     
@@ -98,9 +98,9 @@ test('Creating Existing User', async function()
 {
     // setting up request for existing user
     let req = conIntercept.mockRequest();
-    req.body.username = "fred";
-    req.body.password = "fredsPW";
-    req.body.teamID = "unassigned";
+    req.body.UserName = "fred";
+    req.body.Password = "fredsPW";
+    req.body.TeamID = "unassigned";
     // set up response
     let res = conIntercept.mockResponse();
     
@@ -116,7 +116,7 @@ test('Read Information for an Existing User', async function()
 {
     // setting up request for existing user
     let req = conIntercept.mockRequest();
-    req.body.username = "fred";
+    req.params.username = "fred";
     // set up response
     let res = conIntercept.mockResponse();
     
@@ -140,7 +140,7 @@ test('Read Information for a Non-Existing User', async function()
 {
     // setting up request for existing user
     let req = conIntercept.mockRequest();
-    req.body.username = "jake";
+    req.params.username = "jake";
     // set up response
     let res = conIntercept.mockResponse();
     
