@@ -58,27 +58,28 @@ export default function EditPlayer({navigation}){
   [userTy, setTypeInput] = React.useState("");
   [teamIn, setTeamInput] = React.useState("");
   [idIn, setIdInput] = React.useState("");
-  [userGet, get] = React.useState([]);
+  [userGet, grabUser] = React.useState([]);
+  var playerUser;
   // axios import
   const axios = require('axios');
 
 
   function handleSubmit(){
 
-    console.log(username)
       axios.get("http://localhost:4000/user/" + username)
+      .then(response => {
           
-        .then(function(response) {
-          get ( response.data)
-        })
+        playerUser = response.data;
+          
+      })
+      
+      .catch((error) => 
+      {
 
-        // For error
-        .catch((error) => 
-        {
           console.log(error);
-        });
 
-      console.log(userGet)
+      });
+
     
     setTimeout(() => { 
 
@@ -86,19 +87,19 @@ export default function EditPlayer({navigation}){
       if(userTy === ""){
 
 
-        userTy = user.UserType
+        userTy = playerUser.UserType
 
       }
 
       if(teamIn === ""){
 
-        teamIn =  user.TeamID
+        teamIn =  playerUser.TeamID
 
       }
 
       if(idIn === ""){
 
-        idIn = user._id
+        idIn = playerUser._id
 
       }
 
@@ -106,9 +107,8 @@ export default function EditPlayer({navigation}){
       profile = {
 
         _id: idIn,
-        UserName:username
-        ,
-        Email:user.Email,
+        UserName:username,
+        Email:playerUser.Email,
         UserType: userTy,
         TeamID:teamIn,
         Likes: user.Likes
