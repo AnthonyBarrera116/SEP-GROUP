@@ -44,6 +44,12 @@ export default function DeleteAccount({navigation}) {
             {/*Text for the 'Submit' button*/}
             <Text style={FormStyle.formButtonText}>Delete</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={FormStyle.formButton}
+            onPress={() => navigation.pop()}>
+            {/*Text for the 'Submit' button*/}
+            <Text style={FormStyle.formButtonText}>Go Back</Text>
+          </TouchableOpacity>
       </View>
     </>
   );

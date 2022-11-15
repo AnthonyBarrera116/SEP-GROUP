@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
 export default function EditPlayer({navigation}){
 
   [uName, setNameInput] = React.useState("");
+  [newName, setNewNameInput] = React.useState("");
   [userTy, setTypeInput] = React.useState("");
   [teamIn, setTeamInput] = React.useState("");
   [idIn, setIdInput] = React.useState("");
@@ -67,10 +68,9 @@ export default function EditPlayer({navigation}){
 
     userd = {
 
-      username: uName,
+      UserName: uName,
 
     }
-    console.log(userd.username)
 
     axios.post("http://localhost:4000/getuser",userd)
         
@@ -86,55 +86,53 @@ export default function EditPlayer({navigation}){
       console.log(error);
     });
     
-    console.log(user)
+
     setTimeout(() => { 
-    if(uName === ""){
 
-      uName = user.UserName
-
-    }
-
-    if(userTy === ""){
+      if(userTy === ""){
 
 
-      userTy = user.UserType
+        userTy = user.UserType
 
-    }
+      }
 
-    if(teamIn === ""){
+      if(teamIn === ""){
 
-      teamIn =  user.TeamID
+        teamIn =  user.TeamID
 
-    }
+      }
 
-    if(idIn === ""){
+      if(idIn === ""){
 
-      idIn = user._id
+        idIn = user._id
 
-    }
+      }
 
 
-    profile = {
+      profile = {
 
-      _id: idIn,
-      UserName:uName,
-      TeamID:teamIn,
-      UserType: userTy,
+        _id: idIn,
+        UserName:uName,
+        TeamID:teamIn,
+        UserType: userTy,
 
-    }
+      }
 
+        
       
-    axios.post("http://localhost:4000/updateUser", profile)
-        .then((response) => console.log( JSON.stringify( response.data ) ))
-        .catch((error) => 
-        {
-            console.log(error);
-        });
+      axios.post("http://localhost:4000/updateUser", profile)
+          .then((response) => console.log( JSON.stringify( response.data ) ))
+          .catch((error) => 
+          {
+              console.log(error);
+          });
 
-      alert( JSON.stringify(profile) );
+        alert( JSON.stringify(profile) );
 
 
     }, 500);
+
+    navigation.pop()
 
   }
 
@@ -151,13 +149,14 @@ export default function EditPlayer({navigation}){
             // sets UserGet to info response
             setPlayers(response.data)
           )
-    
+  
           // For error
           .catch((error) => 
           {
             console.log(error);
           });
       },[])
+
 
     
       return(<>
@@ -200,7 +199,7 @@ export default function EditPlayer({navigation}){
 
               <Text style={FormStyle.label}>NEWUserName:</Text>
                 
-                <TextInput onChangeText={setNameInput} style={FormStyle.input} autoCapitalize={false} />
+                <TextInput onChangeText={setNewNameInput} style={FormStyle.input} autoCapitalize={false} />
 
               <Text style={FormStyle.label}>UserType:</Text>
 

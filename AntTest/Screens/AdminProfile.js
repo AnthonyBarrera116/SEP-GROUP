@@ -51,13 +51,23 @@ export default function AdminProfile({navigation}){
                               
                   < TouchableOpacity style={FormStyle.formButton} onPress={() =>navigation.navigate('CoachRequest')}>
                                     
-                     <Text style={FormStyle.formButtonText}>Coach Requats</Text>
+                     <Text style={FormStyle.formButtonText}>Coach Requests</Text>
                                   
+                  </TouchableOpacity>
+
+                  
+                  <TouchableOpacity style={FormStyle.formButton} onPress={() => navigation.pop() }>
+                           
+                           <Text style={FormStyle.formButtonText}>Sign Out</Text>
+                        
                   </TouchableOpacity>
 
                </View>
 
+               
             </View>
+            
+               
       
          </View>
 

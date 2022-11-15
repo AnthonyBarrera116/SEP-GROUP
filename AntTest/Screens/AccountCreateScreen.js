@@ -21,27 +21,30 @@ export default function LoginScreen({navigation}){
     // Const for name and password
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
+    
+    const [email, setEm] = React.useState("");
 
     // URL for MoongoDB
     const url="http://localhost:4000/user"
 
     // parameters include the username, password, and url from properties
-    function handleSubmit(pUsername, pPwd){
+    function handleSubmit(pUsername, pPwd,em){
         // TODO replace Team ID properly when framework is set up
         let placeholderTeamID = "unassigned";
         //let hashedPw = passwordUtil.hashPassword( pPwd );
         const user = 
         {
-            username: pUsername, 
-            password: pPwd, 
-            teamID:placeholderTeamID
+            UserName: pUsername, 
+            Email: em,
+            Password: pPwd, 
+            TeamID:placeholderTeamID
         };
         // log the URL just to be sure we're connecting to the right port
-        console.log(url);
+        //console.log(url);
         
         // use a POST request with Axios. we're posting the user's information to the server
         axios.post(url, user)
-        .then((response) => console.log( JSON.stringify( response.data ) ))
+        .then((response) => console.log( "Account Created"))//JSON.stringify( response.data )
         .catch((error) => 
         {
             console.log(error);
@@ -49,7 +52,8 @@ export default function LoginScreen({navigation}){
         
         // simply print the user's information
         // indicates that we can retrieve user info from the DB to the app
-        alert( JSON.stringify(user) );
+        //alert( JSON.stringify(user) );
+        alert( "Account Created" );
         navigation.pop();
         // TODO - change navigation from page based on User Status (coach, admin, normal player)
     }
@@ -80,6 +84,15 @@ export default function LoginScreen({navigation}){
                 style={FormStyle.input} 
                 autoCapitalize={false} />
 
+            <Text style={FormStyle.label}>
+                Email:
+            </Text>
+            {/*Username input field*/}
+            <TextInput 
+                onChangeText={setEm} 
+                style={FormStyle.input} 
+                autoCapitalize={false} />
+
             {/*Text for the password label*/}
             <Text style={FormStyle.label}>
                 Password:
@@ -97,7 +110,7 @@ export default function LoginScreen({navigation}){
             the URL is sent as one of the properties for this screen*/}
             <TouchableOpacity
                 style={FormStyle.formButton}
-                onPress={()=> handleSubmit(username, password)}>
+                onPress={()=> handleSubmit(username, password,email)}>
                 {/*Text for the 'Submit' button*/}
                 <Text style={FormStyle.formButtonText}>
                     Submit

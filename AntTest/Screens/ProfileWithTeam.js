@@ -140,7 +140,13 @@ return (<>
          </View>
 
       </View>
-
+      
+      <TouchableOpacity style={FormStyle.formButton} onPress={() => DeleteAccount() }>
+                     
+                     <Text style={FormStyle.formButtonText}>Sign Out</Text>
+                  
+      </TouchableOpacity>
+               
             
       {/*Notifications box*/}
       <View style = {{marginTop:-100}}>

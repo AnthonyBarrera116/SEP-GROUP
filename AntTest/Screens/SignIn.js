@@ -1,11 +1,11 @@
 // Imports React
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 
 // Import Features from React-Native
 import { Text, TextInput, TouchableOpacity, View,useState} from "react-native";
 
 // Import Style of Where eveything goes
-import MainStyle from "../Styles/MainStyle.style";
+import MainStyle from "../Styles/MainStyle.style"
 
 // Import FormStyle for Sign In buttons and log in
 import FormStyle from "../Styles/FormStyle";
@@ -22,19 +22,19 @@ export default function SignIn({navigation}){
 
   // Const variable for Password
   const [password, setPassword] = React.useState("");
+  
 
   // Sets user info got from response to variable
   [userGet, setUser] =  React.useState([]);
     // Function for handling checking user and password 
-  
 
     function handleSubmit(pUser, pPwd){
 
       // User setting up from request
       user = 
       {
-          username: pUser,
-          password: pPwd,
+        UserName: pUser,
+        Password: pPwd,
   
       }
 
@@ -53,8 +53,6 @@ export default function SignIn({navigation}){
         console.log(error);
       });
 
-      console.log(userGet)
-
       // give time to request info
       setTimeout(() => { 
 
@@ -63,27 +61,31 @@ export default function SignIn({navigation}){
 
           // Coach Page
           if( userGet.UserType === 1){
-
+            alert("Sign In Sucessful")
+            setUser(null)
             navigation.navigate('CoachProfile')
 
           }
 
           // Admin page
           else if( userGet.UserType === 2){
-            
+            alert("Sign In Sucessful")
+            setUser(null)
             navigation.navigate('Admin')
 
           }
 
           // If they are on a Team
           else if( userGet.TeamID !== "unassigned"){
-
+            alert("Sign In Sucessful")
+            setUser(null)
            navigation.navigate('ProfileWithTeam')
           }
 
           // Else standard Profile with no team
           else{
-
+            alert("Sign In Sucessful")
+            setUser(null)
             navigation.navigate('ProfileWithoutTeam')
 
           }
@@ -91,19 +93,16 @@ export default function SignIn({navigation}){
       }
 
       else{
-
+        setUser(null)
         // Alert for wrong Password/Username
         alert('INCORRECT USERNAME/PASSWORD')
         
       }
-
-
-
       }, 750);
 
+      setUser(null)
     
     }
-
     // Buttons and style returned for Sign In
     return (<>
       
@@ -119,19 +118,21 @@ export default function SignIn({navigation}){
 
           <Text style={FormStyle.label}>UserName:</Text>
             
-          <TextInput onChangeText={setName} style={FormStyle.input} autoCapitalize={false} />
+          <TextInput value={userName} onChangeText={userName => setName(userName)} onfocus="this.value=''" style={FormStyle.input} autoCapitalize={false}/>
 
           <Text style={FormStyle.label}>Password:</Text>
 
-          <TextInput onChangeText={setPassword} style={FormStyle.input} secureTextEntry={true} />
+          <TextInput  value={password} onChangeText={password => setPassword(password)} onfocus="this.value=''" style={FormStyle.input} secureTextEntry={true} />
 
-          <TouchableOpacity style={FormStyle.formButton} onPress={()=> handleSubmit(userName,password)}>
+          <TouchableOpacity style={FormStyle.formButton} onPress={()=> {handleSubmit(userName,password);setPassword('');setName('')}}> 
+
 
           <Text style={FormStyle.formButtonText}> Submit </Text>
 
           </TouchableOpacity>
 
-          <TouchableOpacity style={FormStyle.formButton} onPress={()=> navigation.navigate('CreateAccount' )}>
+          <TouchableOpacity style={FormStyle.formButton} onPress={()=> {navigation.navigate('CreateAccount')}}>
+
 
           <Text style={FormStyle.formButtonText}> Create Account </Text>
 

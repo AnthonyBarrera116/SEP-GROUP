@@ -16,6 +16,9 @@ const userSchema = new mongoose.Schema({
  exports.create = async function(user){
     let duplicateName = await userModel.find({UserName: user.UserName}).lean();
     let duplicateEmail = await userModel.find({Email: user.Email}).lean();
+
+    console.log(user.UserName)
+    console.log( user.Email)
     if(duplicateName.length > 0)
     {
         console.log("User \"" + user.UserName + "\" already exists");

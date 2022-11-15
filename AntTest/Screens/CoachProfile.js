@@ -37,7 +37,6 @@ export default function CoachProfile({navigation}){
    }
   
   
-  
    function RequestPlayer(){
       
       // Alert if Request Player is pressed
@@ -147,6 +146,13 @@ export default function CoachProfile({navigation}){
                   </View>
 
                </View>
+
+               <TouchableOpacity style={FormStyle.formButton} onPress={() => DeleteAccount() }>
+                     
+                        <Text style={FormStyle.formButtonText}>Sign Out</Text>
+                     
+               </TouchableOpacity>
+                  
       
             </View>
       
