@@ -11,7 +11,8 @@ export default StyleSheet.create({
 
     // forms a button 
     formButton:{
-        marginRight:0,marginLeft:-5,marginTop:5,    
+        marginRight:0,marginLeft:-5,marginTop:5, 
+        width: 300,   
         paddingTop:20,paddingBottom:20,backgroundColor:'black', 
         borderRadius:30,borderWidth: 1,borderColor: 'white'
     },

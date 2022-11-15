@@ -17,41 +17,33 @@ export default function CoachProfile({navigation}){
 
    function LeaveTeam(){
      
-      // Alert if Leave Team  is pressed
+      // Alert if Leave Team  is pressed (NOT IMPLEMENTED)
       alert("LeaveTeam");
   
-        
-    }
+   }
   
-    function DeleteAccount(){
+   function DeleteAccount(){
   
       // Alert if Delete Account is pressed
       navigation.navigate('DeleteAccount')
-      
+   
+   }
   
-      
-    }
-  
-    function DeleteTeam(){
-  
-      
+   function DeleteTeam(){
+
       // Alert if Delete Team is pressed
-      
       navigation.navigate('DeleteTeam') 
-  
-      
-    }
-  
+
+   }
   
   
-    function RequestPlayer(){
+  
+   function RequestPlayer(){
       
       // Alert if Request Player is pressed
       navigation.navigate('TeamRequestoPlayer') 
-       
-      
-  
-    }
+         
+   }
 
    // returns organized buttons andstyle for coach Profile
    return (<>   

@@ -92,12 +92,6 @@ exports.update = async function(user)
         }
         return null;
     }
-    else if(duplicateEmail.length > 0 && (duplicateEmail[0]._id.toString() != user._id.toString() || duplicateEmail.length > 1))
-    {
-        console.log("Email: \"" + user.Email + "\" is already being used while updating");
-        //console.log(JSON.stringify(duplicateEmail));
-        return null;
-    }
     else
     {
         let id = { _id: user._id };

@@ -9,13 +9,10 @@ import MainStyle from "../Styles/MainStyle.style";
 
 // Import FormStyle for Sign In buttons and log in
 import FormStyle from "../Styles/FormStyle";
-import { response } from "express";
 
+
+// Axios
 const axios = require('axios');
-
-// Testing of logging in 
-const e = 'Aj';
-const pass ='1234';
 
 // Function For Logging In
 export default function SignIn({navigation}){
@@ -26,72 +23,84 @@ export default function SignIn({navigation}){
   // Const variable for Password
   const [password, setPassword] = React.useState("");
 
-  
-  const [userGet, setUser] =  React.useState([]);
+  // Sets user info got from response to variable
+  [userGet, setUser] =  React.useState([]);
     // Function for handling checking user and password 
+  
+
     function handleSubmit(pUser, pPwd){
 
-      
-
-      const user = 
+      // User setting up from request
+      user = 
       {
-  
           username: pUser,
           password: pPwd,
   
-  
       }
-          axios.post("http://localhost:4000/dologin",user)
-          .then((response) =>  
-            //console.log(JSON.stringify( response.data)),
-            setUser(response.data)
-          )
-          .catch((error) => 
-          {
-              console.log(error);
-          });
-       
-          console.log(userGet["TeamID"])
 
-      // If email is correct
-      if(userGet !== null){
+      // User login URL
+      axios.post("http://localhost:4000/dologin",user)
+        
+      .then((response) =>  
+        
+        // sets UserGet to info response
+        setUser(response.data)
+      )
 
-          // If coach
-          if( userGet["UseType"] === 1){
-              
-            // Navigate Profile style (DOESN'T WORK)
-            navigation.navigate('CoachProfile') 
+      // For error
+      .catch((error) => 
+      {
+        console.log(error);
+      });
+
+      console.log(userGet)
+
+      // give time to request info
+      setTimeout(() => { 
+
+        // if user info isn't null
+        if(userGet !== null){
+
+          // Coach Page
+          if( userGet.UserType === 1){
+
+            navigation.navigate('CoachProfile')
+
+          }
+
+          // Admin page
+          else if( userGet.UserType === 2){
+            
+            navigation.navigate('Admin')
 
           }
 
           // If they are on a Team
-          else if( userGet["TeamID"] !== "unassigned"){
+          else if( userGet.TeamID !== "unassigned"){
 
-            // Navigate Profile style with team (DOESN'T WORK)
-            navigation.navigate('ProfileWithTeam') 
-
+           navigation.navigate('ProfileWithTeam')
           }
 
           // Else standard Profile with no team
           else{
 
-              
-            // Navigate Profile style without team (DOESN'T WORK)
-            navigation.navigate('ProfileWithoutTeam') 
+            navigation.navigate('ProfileWithoutTeam')
 
           }
 
-      
-        // Incorrect Password
       }
 
-      // Incorrect Email
       else{
 
-        // Alert for wrong Password
-        alert('INCORRECT EMAIL/PASSWORD')
-
+        // Alert for wrong Password/Username
+        alert('INCORRECT USERNAME/PASSWORD')
+        
       }
+
+
+
+      }, 750);
+
     
     }
 
@@ -108,7 +117,7 @@ export default function SignIn({navigation}){
 
         <View style={FormStyle.groupView}>
 
-          <Text style={FormStyle.label}>Email:</Text>
+          <Text style={FormStyle.label}>UserName:</Text>
             
           <TextInput onChangeText={setName} style={FormStyle.input} autoCapitalize={false} />
 
@@ -122,7 +131,7 @@ export default function SignIn({navigation}){
 
           </TouchableOpacity>
 
-          <TouchableOpacity style={FormStyle.formButton} onPress={()=> navigation.navigate('CreateAccount', url="http://localhost:4000/user" )}>
+          <TouchableOpacity style={FormStyle.formButton} onPress={()=> navigation.navigate('CreateAccount' )}>
 
           <Text style={FormStyle.formButtonText}> Create Account </Text>
 

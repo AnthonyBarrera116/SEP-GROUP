@@ -59,18 +59,38 @@ exports.getUserInfo = async function(request, response)
 {
     // get the username from the request body
     let username = request.body.username;
-    
+
     // get the user information
     let userInfo = await dao.readByUsername(username);
     
     // if the user isn't null from the DAO
     if (userInfo !== null){
         // set password to 'null' before returning
-        userInfo.Password = null;
+        //userInfo.Password = null;
         response.status(200);
         response.send(userInfo);
     }
     // user is not found
+    else
+    {
+        // send 404 status and null
+        response.status(404);
+        response.send(null);
+    }
+}
+
+exports.getAllUsers = async function(request, response){
+
+    
+    // get the user information
+    let allUsers = await dao.readAll();
+    
+    // if the user isn't null from the DAO
+    if (allUsers !== null){
+        
+        response.send(allUsers);
+    }
+
     else
     {
         // send 404 status and null
@@ -88,15 +108,25 @@ exports.login = async function(request, response)
     let username = request.body.username;
     let password = request.body.password;
     
-    
+    //console.log(username);
+    //console.log(password);
+
     // get the user based on the username from the DAO
     let user = await dao.readByUsername(username);
     
-    
+    console.log(user);
     
     // if the user isn't null and the passwords match, set status to 200 and return the user
     // don't return the password field, just the other information
-    if(user === user.username && user.Password === password)
+
+    if (user === null){
+
+        response.status(404);
+        response.send(null);
+
+    }
+
+    else if( user.UserName === username && user.Password === password)
     {
         response.status(200);
         
@@ -155,7 +185,6 @@ exports.updateUser = async function(request, response)
             UserName: updatedUser.UserName,
             TeamID: updatedUser.TeamID,
             UserType: updatedUser.UserType,
-            Likes: updatedUser.Likes
         }
         response.status(200);
         response.send(updatedUserInfo);

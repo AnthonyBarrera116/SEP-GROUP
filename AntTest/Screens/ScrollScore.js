@@ -94,7 +94,7 @@ export default function ScrollScore() {
                 
             {teamsGames.map((a,b)=>{
 
-                if((a.Date.Day == date.getDate() + 1) && (a.Date.Month == date.getMonth()) && (a.Date.Year == date.getFullYear()) ){
+                if((a.Date.Day == date.getDate() ) && (a.Date.Month == date.getMonth()) && (a.Date.Year == date.getFullYear()) ){
 
                     return <View style={styles.Box}>
                                                         
@@ -103,18 +103,13 @@ export default function ScrollScore() {
                         {a.Home}
                                     
                     </Text>
-    
-                        
-    
-    
+
                     <Text style={styles.Away}>
     
                         {a.Away}
     
                     </Text>
-    
-                                    
-                                    
+                   
                 </View>
 
                 }
