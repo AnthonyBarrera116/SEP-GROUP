@@ -80,16 +80,16 @@ accepts `username` as a parameter
 */
 exports.getUserInfo = async function(request, response)
 {
-    // get the username from the request body
-    let username = request.body.UserName;
+    // get the UserName from the request body
+    let username = request.params.username;
 
     // get the user information
     let userInfo = await dao.readByUsername(username);
     
     // if the user isn't null from the DAO
     if (userInfo !== null){
-        // set password to 'null' before returning
-        //userInfo.Password = null;
+        // set Password to 'null' before returning
+        userInfo.Password = null;
         response.status(200);
         response.send(userInfo);
     }
@@ -101,7 +101,6 @@ exports.getUserInfo = async function(request, response)
         response.send(null);
     }
 }
-
 
 /*
 gets a user from their database ID
@@ -204,6 +203,7 @@ exports.updateUser = async function(request, response)
         Likes: request.body.Likes
     }
 
+    console.log(currUser)
     let updatedUser = await dao.update(currUser);
     // update returns null if it fails, so we return null if it returns null
     if (updatedUser === null)

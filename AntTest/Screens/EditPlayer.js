@@ -6,6 +6,7 @@ import { useState ,useEffect} from 'react';
 
 // Import FormStyle for Sign In buttons and log in
 import FormStyle from "../Styles/FormStyleEdit";
+import { response } from "express";
 
 const styles = StyleSheet.create({
 
@@ -52,43 +53,36 @@ const styles = StyleSheet.create({
 
 export default function EditPlayer({navigation}){
 
-  [uName, setNameInput] = React.useState("");
+  [username, setNameInput] = React.useState("");
   [newName, setNewNameInput] = React.useState("");
   [userTy, setTypeInput] = React.useState("");
   [teamIn, setTeamInput] = React.useState("");
   [idIn, setIdInput] = React.useState("");
-
-  [user,setUser] = React.useState([]);
-   
+  [userGet, get] = React.useState([]);
   // axios import
   const axios = require('axios');
 
 
   function handleSubmit(){
 
-    userd = {
+    console.log(username)
+      axios.get("http://localhost:4000/user/" + username)
+          
+        .then(function(response) {
+          get ( response.data)
+        })
 
-      UserName: uName,
+        // For error
+        .catch((error) => 
+        {
+          console.log(error);
+        });
 
-    }
-
-    axios.post("http://localhost:4000/getuser",userd)
-        
-    .then((response) =>  
-      
-      // sets UserGet to info response
-      setUser(response.data)
-    )
-
-    // For error
-    .catch((error) => 
-    {
-      console.log(error);
-    });
+      console.log(userGet)
     
-
     setTimeout(() => { 
 
+      
       if(userTy === ""){
 
 
@@ -112,13 +106,15 @@ export default function EditPlayer({navigation}){
       profile = {
 
         _id: idIn,
-        UserName:uName,
-        TeamID:teamIn,
+        UserName:username
+        ,
+        Email:user.Email,
         UserType: userTy,
+        TeamID:teamIn,
+        Likes: user.Likes
 
       }
 
-        
       
       axios.post("http://localhost:4000/updateUser", profile)
           .then((response) => console.log( JSON.stringify( response.data ) ))

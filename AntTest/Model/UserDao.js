@@ -66,7 +66,6 @@ exports.readByUsername = async function(name){//Assumes there will only be one u
     //console.log(JSON.stringify(user));
     return user;
 }
-
 exports.del = async function(id){
     let user = await userModel.findByIdAndDelete(id);
     return user;

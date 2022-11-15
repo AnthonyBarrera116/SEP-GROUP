@@ -36,7 +36,7 @@ let port = 4000;
 
 // user operations
 app.post('/user', userController.saveUser); // creating a new user
-app.post('/getuser', userController.getUserInfo); // getting user information
+app.get('/user/:username', userController.getUserInfo); 
 app.get('/user/:id', userController.getIDInfo); // getting user information from the ID
 app.post('/dologin', userController.login); // logging in
 app.get('/getlogged', userController.loggedUser); // get the user currently logged into the session
