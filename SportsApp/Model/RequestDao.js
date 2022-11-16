@@ -34,8 +34,8 @@ exports.readByRequesterID = async function(id){
     return requests;
 }
 
-exports.readBySecondaryID = async function(id, requestType){ //Specify request type since users and teams might have the same IDs
-    let requests = await requestModel.find({SecondaryID: id, RequestType: requestType}).lean();
+exports.readBySecondaryID = async function(id){ //Specify request type since users and teams might have the same IDs
+    let requests = await requestModel.find({SecondaryID: id}).lean();
     return requests;
 }
 

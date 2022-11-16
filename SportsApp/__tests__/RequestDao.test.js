@@ -110,7 +110,7 @@ test('Read requests for one secondary ID', async function()
     newrequest.SecondaryID = "d";
     await dao.create(newrequest);
     await dao.create(newrequest);
-    expect(JSON.stringify(requests)).toBe(JSON.stringify(await dao.readBySecondaryID("b", 0)));
+    expect(JSON.stringify(requests)).toBe(JSON.stringify(await dao.readBySecondaryID("b")));
 });
 
 test('Read requests of one type', async function()
