@@ -10,6 +10,7 @@ const cors = require('cors');
 const memorystore = require('memorystore')(session);
 const userController = require('./Controllers/UserController'); // creating the user controller
 const teamController = require('./Controllers/TeamController'); // creating the team controller
+const reqController = require('./Controllers/RequestController'); // creating the req controller
 
 const app = express(); //creates a new Express Application
 
@@ -48,6 +49,10 @@ app.post('/maketeam', teamController.createTeam); // create a new team
 app.get('/getteam/:id', teamController.getTeamInfo); // get a specific team by their Database ID
 app.get('/getallteams',teamController.getTeams); // get all teams in the DB
 
+// req operations
+app.post('/makereq', reqController.createReq);
+app.get('receivedreqs/:id', reqController.getReceivedReqs);
+app.get('sentreqs/:id', reqController.getSentReqs);
 
 const server = app.listen(port, hostname, 
     function()
