@@ -16,7 +16,7 @@ POST Request
 creates a request sent from one user to another
 responds with the request as it is sent to the DB if it goes through
 */
-exports.create = async function(request, response)
+exports.createReq = async function(request, response)
 {
     
     let newRequest = 

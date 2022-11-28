@@ -11,6 +11,7 @@ const memorystore = require('memorystore')(session);
 const userController = require('./Controllers/UserController'); // creating the user controller
 const teamController = require('./Controllers/TeamController'); // creating the team controller
 const reqController = require('./Controllers/RequestController'); // creating the req controller
+const gameController = require('./Controllers/GameController'); // creating the game controller
 
 const app = express(); //creates a new Express Application
 
@@ -51,8 +52,14 @@ app.get('/getallteams',teamController.getTeams); // get all teams in the DB
 
 // req operations
 app.post('/makereq', reqController.createReq);
-app.get('receivedreqs/:id', reqController.getReceivedReqs);
-app.get('sentreqs/:id', reqController.getSentReqs);
+app.get('/receivedreqs/:id', reqController.getReceivedReqs);
+app.get('/sentreqs/:id', reqController.getSentReqs);
+
+// game operations
+app.post('/makegame', gameController.createGame);
+app.get('/games', gameController.getAllGames);
+app.get('/games/:id', gameController.getGame);
+app.get('/teamgames/:id', gameController.getTeamSchedule);
 
 const server = app.listen(port, hostname, 
     function()
