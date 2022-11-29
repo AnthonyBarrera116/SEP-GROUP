@@ -10,6 +10,8 @@ const cors = require('cors');
 const memorystore = require('memorystore')(session);
 const userController = require('./Controllers/UserController'); // creating the user controller
 const teamController = require('./Controllers/TeamController'); // creating the team controller
+const reqController = require('./Controllers/RequestController'); // creating the req controller
+const gameController = require('./Controllers/GameController'); // creating the game controller
 
 const app = express(); //creates a new Express Application
 
@@ -36,19 +38,28 @@ let port = 4000;
 
 // user operations
 app.post('/user', userController.saveUser); // creating a new user
-app.get('/user/:username', userController.getUserInfo); 
+app.get('/user/:username', userController.getUserInfo); // getting user information from username
 app.get('/user/:id', userController.getIDInfo); // getting user information from the ID
 app.post('/dologin', userController.login); // logging in
 app.get('/getlogged', userController.loggedUser); // get the user currently logged into the session
 app.get('/logout', userController.logout); // log the user out of the session
 app.post('/updateuser', userController.updateUser); // POST request to change the user's information
-app.get('/allUsers',userController.getAllUsers)
 
 // team operations
 app.post('/maketeam', teamController.createTeam); // create a new team
 app.get('/getteam/:id', teamController.getTeamInfo); // get a specific team by their Database ID
 app.get('/getallteams',teamController.getTeams); // get all teams in the DB
 
+// req operations
+app.post('/makereq', reqController.createReq);
+app.get('/receivedreqs/:id', reqController.getReceivedReqs);
+app.get('/sentreqs/:id', reqController.getSentReqs);
+
+// game operations
+app.post('/makegame', gameController.createGame);
+app.get('/games', gameController.getAllGames);
+app.get('/games/:id', gameController.getGame);
+app.get('/teamgames/:id', gameController.getTeamSchedule);
 
 const server = app.listen(port, hostname, 
     function()

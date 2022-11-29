@@ -13,20 +13,27 @@ import FormStyle from "../Styles/FormStyle";
 const axios = require('axios');
 
 // request team
-export default function RequestTeam({navigation}) {
+export default function RequestTeam({navigation,route}) {
+  
+  const url="http://localhost:4000/makereq"
   const [teamName, setTeamName] = React.useState('');
 
   // team handle submit
   function handleSubmit(teamName) {
    
     // const team request
-    const team = {
-      Team: teamName,
+    const team = 
+    {
+        RequesterID: route.params.nam, //User making the request
+        SecondaryID: teamName, //Receiver of the request; could be playerID, coachID, or teamID depending on how you use it
+        Reason: "",
+        RequestType: 2, //0-player requests to become coach, 1-Coach requests player, 2-Player requests to join team
+        Status: 0, //0-Pending, 1-Accepted, 2-Rejected
     };
 
     // axios
     axios
-      .post(teamName)
+      .post(url,team)
       .then(response => console.log(JSON.stringify(response.data)))
       .catch(error => {
         console.log(error);

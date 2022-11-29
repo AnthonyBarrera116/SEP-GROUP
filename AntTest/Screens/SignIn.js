@@ -25,7 +25,7 @@ export default function SignIn({navigation}){
   
 
   // Sets user info got from response to variable
-  [userGet, setUser] =  React.useState([]);
+  var userGet;
     // Function for handling checking user and password 
 
     function handleSubmit(pUser, pPwd){
@@ -44,7 +44,7 @@ export default function SignIn({navigation}){
       .then((response) =>  
         
         // sets UserGet to info response
-        setUser(response.data)
+        userGet = response.data
       )
 
       // For error
@@ -61,46 +61,57 @@ export default function SignIn({navigation}){
 
           // Coach Page
           if( userGet.UserType === 1){
+            
+            team = userGet.TeamID
+            nam = userGet.UserName
             alert("Sign In Sucessful")
-            setUser(null)
-            navigation.navigate('CoachProfile')
-
+            navigation.navigate('CoachProfile',{team,nam})
+            userGet = null
           }
 
           // Admin page
           else if( userGet.UserType === 2){
+            
+            nam = userGet.UserName
             alert("Sign In Sucessful")
-            setUser(null)
-            navigation.navigate('Admin')
+            navigation.navigate('Admin',{nam})
+            
+            userGet = null
 
           }
 
           // If they are on a Team
           else if( userGet.TeamID !== "unassigned"){
+            
+            team = userGet.TeamID
+            nam = userGet.UserName
             alert("Sign In Sucessful")
-            setUser(null)
-           navigation.navigate('ProfileWithTeam')
+            navigation.navigate('ProfileWithTeam',{team,nam})
+           
+            userGet = null
           }
 
           // Else standard Profile with no team
           else{
+            nam = userGet.UserName
+            
             alert("Sign In Sucessful")
-            setUser(null)
-            navigation.navigate('ProfileWithoutTeam')
+            navigation.navigate('ProfileWithoutTeam',{nam})
 
+            userGet = null
           }
 
       }
 
       else{
-        setUser(null)
+        userGet = null
         // Alert for wrong Password/Username
         alert('INCORRECT USERNAME/PASSWORD')
         
       }
       }, 750);
 
-      setUser(null)
+      userGet = null
     
     }
     // Buttons and style returned for Sign In

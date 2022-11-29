@@ -2,7 +2,8 @@
 import {React} from "react";
 
 // Imports Text, View and image from recat-native
-import { Text,View, Image,TouchableOpacity}  from "react-native";
+import { Text,View, Image,TouchableOpacity,StyleSheet}    from "react-native";
+
 
 // IMports Profile Buttons, notifications box and team box
 import FormStyle from "../Styles/ButtonProfileStyle";
@@ -11,33 +12,25 @@ import TeamBox from "../Boxes/TeamBox";
 
 
 // Profile with team screen function
-export default function ProfileWithTeam({navigation}){
-
+export default function ProfileWithTeam({navigation,route}){
+   const styles = StyleSheet.create({
+        
+      // Cretaion of box for teambox
+      RectangleShapeView1: {
+          marginTop: 20,
+          width: 65 * 2,
+          height: 40,
+          left:-75,
+          backgroundColor: '#000000',
+      },
+   
+  });
    function LeaveTeam(){
 
       // alert Leave Team button is clicked
       alert("LeaveTeam Clicked");
   
    }
-  
-    // Request team function
-   function RequestTeam(){
-  
-      // alert Request Team button is clicked
-      navigation.navigate('RequestTeam')
-  
-      
-   }
-  
-    // Request to coach function 
-   function RequestToCoach(){
-  
-      // alert Request To Coach button is clicked
-      navigation.navigate('RequatCoach')
-  
-      
-   }
-  
   
     // Delete account function
    function Delete(){
@@ -57,7 +50,7 @@ return (<>
       { /*Name user*/}
       <Text>
          
-         name
+      {route.params.nam}
 
       </Text>
          
@@ -68,13 +61,17 @@ return (<>
       </View>
 
       {/*Team Box*/}
-      <View style = {{marginRight:120}}>
+      <View style={styles.RectangleShapeView1}>
 
-            <TeamBox>
+            <Text style = {{textAlign:'center',fontSize: 20,color: 'white'}}> 
 
-            </TeamBox>
+               {route.params.team}
 
-      </View>
+            </Text>
+
+         
+         </View>   
+
                   
       {/*Top Buttons*/}      
       <View style = {{marginTop:-65,flexDirection:'row'}}>
@@ -98,12 +95,6 @@ return (<>
          <View style={FormStyle.button}>
          </View>
             
-            {/*Request To Team*/}
-            <View style={{flex:2,left: 60}}>
-               <TouchableOpacity style={FormStyle.formButton} onPress={() => RequestTeam() }>
-                  <Text style={FormStyle.formButtonText}>Request To Team</Text>
-               </TouchableOpacity>
-            </View>
    
          </View>
    
@@ -112,16 +103,8 @@ return (<>
    
             <View style={FormStyle.button}>
             </View>
+      
             
-            {/*Request to coach*/}
-            <View style={{flex:2}}>
-               <TouchableOpacity style={FormStyle.formButton} onPress={() => RequestToCoach() }>
-      
-                  <Text style={FormStyle.formButtonText}>Request To Coach</Text>
-      
-               </TouchableOpacity>
-      
-            </View>
       
             <View style={FormStyle.button}>
       
@@ -141,7 +124,7 @@ return (<>
 
       </View>
       
-      <TouchableOpacity style={FormStyle.formButton} onPress={() => DeleteAccount() }>
+      <TouchableOpacity style={FormStyle.formButton} onPress={() => navigation.pop() }>
                      
                      <Text style={FormStyle.formButtonText}>Sign Out</Text>
                   

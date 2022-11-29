@@ -56,13 +56,12 @@ assumes request contains
     player ID
 responds with all requests for the given player
 */
-exports.getRequests = async function(request, response)
+exports.getPlayerRequests = async function(request, response)
 {
     // get the playerID from the request body
     let playerID = request.body.playerID;
     
     // send request to the DAO with all responses
-    // TODO - change this line if need be after PlayerRequest DAO is updated
     let allRequests = await dao.readByPlayerID(playerID);
     
     //if DAO response is not null, send back all responses even if they're empty
@@ -70,6 +69,51 @@ exports.getRequests = async function(request, response)
     {
         response.status(202);
         response.send(allRequests);
+    }
+    else
+    {
+        response.status(500);
+        response.send(null);
+    }
+}
+
+/*
+function to delete a request for a player
+assumes the request contains
+    player request ID
+responds with the deleted request upon success
+*/
+exports.deleteRequest = async function(request, response)
+{
+    // get the ID from the request
+    let requestID = request.body.requestID;
+    
+    // delete the request from the DAO
+    let deletedRequest = await dao.del(requestID);
+    
+    // status 200 means success and send back deleted request
+    response.status(200);
+    response.send(deletedRequest);
+}
+
+/*
+function to edit/update a request
+assumes the request contains
+    a request (which will be called 'req' to avoid confusion)
+responds with the updated request upon success
+*/
+exports.editRequest = async function(request, response)
+{
+    // get the new player req from the request
+    let req = request.body.req;
+    
+    // send the updated request to the DAO to make changes in the DB
+    let updatedReq = await dao.update(req);
+    
+    if(updatedReq !== null)
+    {
+        response.status(200);
+        response.send(updatedReq);
     }
     else
     {

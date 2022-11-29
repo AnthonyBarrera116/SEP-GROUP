@@ -10,7 +10,7 @@ import NotificationsBox from '../Boxes/NotificationsBox';
 
 
 //Profile without team function
-export default function ProfileWithoutTeam({navigation}){
+export default function ProfileWithoutTeam({navigation,route}){
 
    function LeaveTeam(){
 
@@ -22,8 +22,9 @@ export default function ProfileWithoutTeam({navigation}){
     // Request team function
    function RequestTeam(){
   
+      nam = route.params.nam
       // alert Request Team button is clicked
-      navigation.navigate('RequestTeam')
+      navigation.navigate('RequestTeam',{nam})
   
       
    }
@@ -32,7 +33,9 @@ export default function ProfileWithoutTeam({navigation}){
    function RequestToCoach(){
   
       // alert Request To Coach button is clicked
-      navigation.navigate('RequatCoach')
+      
+      nam = route.params.nam
+      navigation.navigate('RequatCoach',{nam})
   
       
    }
@@ -55,7 +58,7 @@ export default function ProfileWithoutTeam({navigation}){
          { /*Name user*/}
          <Text>
             
-            name
+            {route.params.nam}
 
          </Text>
             
@@ -132,7 +135,7 @@ export default function ProfileWithoutTeam({navigation}){
 
          </View>
 
-         <TouchableOpacity style={FormStyle.formButton} onPress={() => DeleteAccount() }>
+         <TouchableOpacity style={FormStyle.formButton} onPress={() => navigation.pop()}>
                      
             <Text style={FormStyle.formButtonText}>Sign Out</Text>
                   

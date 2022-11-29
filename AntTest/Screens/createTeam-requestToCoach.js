@@ -13,7 +13,8 @@ import FormStyle from "../Styles/FormStyle";
 //import axios
 const axios = require('axios');
 
-export default function RequestCoach({navigation}) {
+const url="http://localhost:4000/makereq"
+export default function RequestCoach({navigation,route}) {
   const [teamName, setTeamName] = React.useState('');
   const [reasonToCoach, setReasonToCoach] = React.useState('');
   
@@ -21,18 +22,25 @@ export default function RequestCoach({navigation}) {
   function handleSubmit(teamName, reason) {
     
     // Const print alert
-    const team = {
-      Team: teamName,
-      Reason: reason
+    const team = 
+    {
+        RequesterID: route.params.nam, //User making the request
+        SecondaryID: teamName, //Receiver of the request; could be playerID, coachID, or teamID depending on how you use it
+        Reason: reason,
+        RequestType: 0, //0-player requests to become coach, 1-Coach requests player, 2-Player requests to join team
+        Status: 0, //0-Pending, 1-Accepted, 2-Rejected
     };
 
-    // Axios import
+    // axios
     axios
-      .post(teamName)
+      .post(url,team)
       .then(response => console.log(JSON.stringify(response.data)))
       .catch(error => {
         console.log(error);
       });
+
+    // Alert team name 
+    alert(JSON.stringify(team));
 
     // alert team name and reason
     alert(JSON.stringify(team));

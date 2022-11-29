@@ -2,18 +2,31 @@
 import React from "react";
 
 // Imports View, Text and Image
-import { Text,View, Image,TouchableOpacity}    from "react-native";
+import { Text,View, Image,TouchableOpacity,StyleSheet}    from "react-native";
 
 // Imports Team Box, Notfications and Coach Buttons to Coach Profile Screen
 import NotificationsBox from '../Boxes/NotificationsBox';
-import TeamBox from '../Boxes/TeamBox';
 
 import FormStyle from "../Styles/ButtonProfileStyle";
 
 
 
 // Coach Profile Organized function
-export default function CoachProfile({navigation}){
+export default function CoachProfile({navigation, route}){
+
+    // Style Creation
+    const styles = StyleSheet.create({
+        
+      // Cretaion of box for teambox
+      RectangleShapeView1: {
+          marginTop: 20,
+          width: 65 * 2,
+          height: 40,
+          left:-75,
+          backgroundColor: '#000000',
+      },
+   
+  });
 
    function LeaveTeam(){
      
@@ -50,8 +63,7 @@ export default function CoachProfile({navigation}){
          
          {/*Name user*/}
          <Text>
-            
-            name
+            {route.params.nam}
 
          </Text>
             
@@ -61,17 +73,26 @@ export default function CoachProfile({navigation}){
             <Image source={{uri: 'https://cdn4.iconfinder.com/data/icons/symbols-vol-1-1/40/user-person-single-id-account-player-male-female-512.png'}} style={{width: 100, height: 100}} />
                   
          </View>
-      
+
+         <View style={styles.RectangleShapeView1}>
+
+            <Text style = {{textAlign:'center',fontSize: 20,color: 'white'}}> 
+
+               {route.params.team}
+
+            </Text>
+
+         
+         </View>   
+
+
+
          {/*Team Box*/}
          <View style = {{flexDirection:'column',alignItems:'center'}}>
                   
-            <View style = {{marginRight:120}}>
-      
-               <TeamBox>
-      
-               </TeamBox>
-                     
-            </View>
+        
+           
+                  
                   
             
             <View style = {{marginTop:-60,flexDirection:'row'}}>
@@ -147,17 +168,17 @@ export default function CoachProfile({navigation}){
 
                </View>
 
-               <TouchableOpacity style={FormStyle.formButton} onPress={() => DeleteAccount() }>
-                     
-                        <Text style={FormStyle.formButtonText}>Sign Out</Text>
-                     
-               </TouchableOpacity>
-                  
       
             </View>
       
          </View>
-            
+
+         <TouchableOpacity style={FormStyle.formButton} onPress={() => navigation.pop() }>
+                     
+            <Text style={FormStyle.formButtonText}>Sign Out</Text>
+                  
+         </TouchableOpacity>
+                           
       
          {/*Notfications box*/}
          <View style = {{marginTop:-100}}>

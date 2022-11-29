@@ -5,9 +5,8 @@ const teamSchema = new mongoose.Schema({
  TeamName: String,
  PlayerIDs: [String],
  CoachID: String,
- W: Number,
- L: Number,
- pts: Number,
+ Wins: Number,
+ Losses: Number,
  },
  { collection : 'Teams' });
 
@@ -64,7 +63,7 @@ exports.update = async function(team)
     else
     {
         let id = { _id: team._id };
-        let updates = { $set: {TeamName: team.TeamName, PlayerIDs: team.PlayerIDs, CoachID: team.CoachID, W: team.W, L: team.L}};
+        let updates = { $set: {TeamName: team.TeamName, PlayerIDs: team.PlayerIDs, CoachID: team.CoachID, Wins: team.Wins, Losses: team.Losses}};
         await teamModel.updateOne(id, updates);
         return await exports.read(team._id);
     }

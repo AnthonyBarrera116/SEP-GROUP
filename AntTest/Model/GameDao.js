@@ -21,7 +21,7 @@ const GameSchema = new mongoose.Schema({
  exports.create = async function(Game){
     const mongoGame = new GameModel(Game);
     await mongoGame.save();
-    return await exports.read(mongoGame._id);
+    return await exports.readByID(mongoGame._id);
     //Used the read function because in tests it kept returning the _id in the beginning rather than end
  }
  
@@ -36,8 +36,23 @@ const GameSchema = new mongoose.Schema({
 }
 
 exports.readByHomeID = async function(id){
-    let Game = await GameModel.find({Home: id}).lean();
-    return Game;
+    let games = await GameModel.find({Home: id}).lean();
+    games.sort((a, b) => parseFloat(a.DateTime) - parseFloat(b.DateTime));
+    return games;
+}
+
+exports.readByAwayID = async function(id){
+    let games = await GameModel.find({Away: id}).lean();
+    games.sort((a, b) => parseFloat(a.DateTime) - parseFloat(b.DateTime));
+    return games;
+}
+
+exports.readSchedule = async function(id){// Returns chronological schedule
+    let awayGames = await exports.readByAwayID(id);
+    let homeGames = await exports.readByHomeID(id);
+    let schedule = awayGames.concat(homeGames);
+    schedule.sort((a, b) => parseFloat(a.DateTime) - parseFloat(b.DateTime));
+    return schedule;
 }
 
 exports.del = async function(id){
@@ -53,6 +68,6 @@ exports.update = async function(Game)
 {
     let id = { _id: Game._id };
     let updates = { $set: {Home: Game.Home, Away: Game.Away, HomeScore: Game.HomeScore, AwayScore: Game.AwayScore, Quarter: Game.Quarter, Time: Game.Time, Down: Game.Down, PlayByPlay: Game.PlayByPlay, CommentIDs: Game.CommentIDs, Likes: Game.Likes, DateTime: Game.DateTime}};
-    await Game.updateOne(id, updates);
+    await GameModel.updateOne(id, updates);
     return await exports.readByID(Game._id);
 }
