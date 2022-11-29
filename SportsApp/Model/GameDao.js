@@ -12,7 +12,7 @@ const GameSchema = new mongoose.Schema({
  PlayByPlay: [String],
  CommentIDs: [String],
  Likes: [String],
- DateTime: Number, //Seconds since January 1st 1970
+ DateTime: Date, //How to save a date: new Date('December 1, 2022 00:00:00')
  },
  { collection : 'Games' });
 
