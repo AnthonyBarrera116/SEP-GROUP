@@ -21,7 +21,6 @@ import Admin from '../Screens/AdminProfile';
 import EditPlayer from '../Screens/EditPlayer'
 
 import CoachRe from '../Screens/CoachRequests'
-import CoachRequestsPage from '../Screens/CoachRequestsPage';
 // Creates Stack Navigator
 const Stack = createNativeStackNavigator()
 
@@ -79,7 +78,6 @@ export default function SignInNav() {
             headerLeft: () => <></>,
           }}
           />
-          <Stack.Screen name="CoachRequestsPage" component={CoachRequestsPage} />
           <Stack.Screen name="CoachRequest" component={CoachRe} />
           <Stack.Screen name="Edit" component={EditPlayer} />
           <Stack.Screen name="DeleteTeam" component={DeleteTeam} />

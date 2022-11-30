@@ -134,8 +134,6 @@ export default function EditPlayer({navigation}){
 
   [players,setPlayers] = React.useState([]);
 
-    playersList = []
-    
       // use a POST request with Axios. we're posting the user's information to the server
       useEffect(() => {
         axios.get("http://localhost:4000/allUsers")

@@ -57,7 +57,7 @@ export default function RequestCoach({navigation,route}) {
     <>
       {/*Title for the page*/}
       <View style={FormStyle.groupView}>
-        <Text style={MainStyle.emphasisText}>Register To Join Team</Text>
+        <Text style={MainStyle.emphasisText}>Request to Be Coach</Text>
       </View>
 
       {/*Input fields*/}

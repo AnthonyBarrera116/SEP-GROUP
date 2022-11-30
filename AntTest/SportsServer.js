@@ -44,6 +44,7 @@ app.post('/dologin', userController.login); // logging in
 app.get('/getlogged', userController.loggedUser); // get the user currently logged into the session
 app.get('/logout', userController.logout); // log the user out of the session
 app.post('/updateuser', userController.updateUser); // POST request to change the user's information
+app.get('/allUsers',userController.getAllUsers)
 
 // team operations
 app.post('/maketeam', teamController.createTeam); // create a new team

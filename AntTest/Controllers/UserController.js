@@ -52,7 +52,6 @@ exports.saveUser = async function(request, response)
         response.send(null);
     }
 }
-
 exports.getAllUsers = async function(request, response){
 
     
@@ -62,6 +61,7 @@ exports.getAllUsers = async function(request, response){
     // if the user isn't null from the DAO
     if (allUsers !== null){
         
+        response.status(200);
         response.send(allUsers);
     }
 
@@ -72,6 +72,7 @@ exports.getAllUsers = async function(request, response){
         response.send(null);
     }
 }
+
 
 
 /*

@@ -44,6 +44,25 @@ exports.createReq = async function(request, response)
     }
 }
 
+exports.getAllReq = async function(request, response){
+    // get the user information
+    let allReq = await dao.readAll();
+    
+    // if the user isn't null from the DAO
+    if (allReq !== null){
+        
+        response.status(200);
+        response.send(allReq);
+    }
+
+    else
+    {
+        // send 404 status and null
+        response.status(404);
+        response.send(null);
+    }
+}
+
 /*
 GET Request
 function to get all reqs sent by players to join a team
