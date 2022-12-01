@@ -170,6 +170,7 @@ exports.logout = function(request, response)
     response.send(null);
 }
 
+// TODO - make it so that a user can only update themselves if they're logged in or an Admin
 exports.updateUser = async function(request, response)
 {
     // get all of the information that we need for the user
@@ -183,41 +184,62 @@ exports.updateUser = async function(request, response)
         Likes: request.body.Likes
     }
     
-    let updatedUser = await dao.update(currUser);
-    // update returns null if it fails, so we return null if it returns null
-    if (updatedUser === null)
+    // if the ID of the user one wants to edit matches the one in the session or the user in the session is an admin, let them update the user
+    if(request.session.user !== null && currUser._id === request.session.user._id || request.session.user.UserType === 2)
     {
-        response.status(404);
-        response.send(null);
-    }
-    else // update is successful
-    {
-        // send info without sending the Password information
-        let updatedUserInfo = 
+        let updatedUser = await dao.update(currUser);
+        // update returns null if it fails, so we return null if it returns null
+        if (updatedUser === null)
         {
-            _id: updatedUser._id,
-            UserName: updatedUser.UserName,
-            TeamID: updatedUser.TeamID,
-            UserType: updatedUser.UserType,
-            Likes: updatedUser.Likes
+            response.status(404);
+            response.send(null);
         }
-        response.status(200);
-        response.send(updatedUserInfo);
+        else // update is successful
+        {
+            // send info without sending the Password information
+            let updatedUserInfo = 
+            {
+                _id: updatedUser._id,
+                UserName: updatedUser.UserName,
+                TeamID: updatedUser.TeamID,
+                UserType: updatedUser.UserType,
+                Likes: updatedUser.Likes
+            }
+            response.status(200);
+            response.send(updatedUserInfo);
+        }
+    }
+    // user is neither an admin or logged in, forbidden and respond with null
+    else
+    {
+        response.status(403);
+        response.send(null);
     }
 }
 
 exports.delUser = async function(request, response)
 {
     let userID = request.body._id;
-    let deletedUser = await dao.del(userID);
-    if (deletedUser !== null)
+    
+    // if the user is the logged user or an admin, let them delete
+    if(request.session.user !== null && userID === request.session.user._id || request.session.user.UserType === 2)
     {
-        response.status(200);
-        response.send(deletedUser);
+        let deletedUser = await dao.del(userID);
+        if (deletedUser !== null)
+        {
+            response.status(200);
+            response.send(deletedUser);
+        }
+        else
+        {
+            response.status(404);
+            response.send(null);
+        }
     }
+    // if user is neither logged in nor an admin, forbidden and send null
     else
     {
-        response.status(404);
+        response.status(403);
         response.send(null);
     }
 }
@@ -236,35 +258,44 @@ exports.makeCoach = async function(request, response)
     let playerID = request.body.PlayerID;
     let teamID = request.body.TeamID;
     
-    // retrieve user from the DAO
-    let user = await dao.readById(playerID);
-    
-    // if the read succeeds, update the user. if not, respond with 'null'
-    if (user !== null)
+    // if the user is logged in as an admin, let the action take place
+    if(request.session.user !== null && request.session.user.UserType === 2)
     {
-        // change the userType to coach and change the team name
-        user.UserType = 1;
-        user.TeamID = teamID;
+        // retrieve user from the DAO
+        let user = await dao.readById(playerID);
         
-        // push update to the DAO
-        let updatedUser = await dao.update(user);
-        
-        // if the update succeeds, return the updated user, else return null
-        if( updatedUser !== null )
+        // if the read succeeds, update the user. if not, respond with 'null'
+        if (user !== null)
         {
-            user.Password = null;
-            response.status(200);
-            response.send(updatedUser);
+            // change the userType to coach and change the team name
+            user.UserType = 1;
+            user.TeamID = teamID;
+            
+            // push update to the DAO
+            let updatedUser = await dao.update(user);
+            
+            // if the update succeeds, return the updated user, else return null
+            if( updatedUser !== null )
+            {
+                user.Password = null;
+                response.status(200);
+                response.send(updatedUser);
+            }
+            else // if the update fails, return 'null'
+            {
+                response.status(500);
+                response.send(null);
+            }
         }
-        else // if the update fails, return 'null'
+        else // user couldn't be read from DAO, respond with null
         {
-            response.status(500);
+            response.status(404);
             response.send(null);
         }
     }
-    else // user couldn't be read from DAO, respond with null
+    else // user is not an admin, forbidden and send null
     {
-        response.status(404);
+        response.status(403);
         response.send(null);
     }
     
@@ -280,45 +311,43 @@ exports.removeCoach = async function(request, response)
 {
     // retrieve ID from request body
     let playerID = request.body.PlayerID;
-    
-    // retrieve player information from DAO
-    let user = await dao.readById(playerID);
-    
-    // if the DAO read responds with a player, change their status to '0'
-    if(user !== null)
+    // if the user is logged in as an admin, let the action take place
+    if(request.session.user !== null && request.session.user.UserType === 2)
     {
-        // set their playerType to 0, so a normal player
-        user.UserType = 0;
+        // retrieve player information from DAO
+        let user = await dao.readById(playerID);
         
-        // update the user in the DAO
-        let updatedUser = await dao.update(user);
-        
-        // if the update succeeds, respond with the updated user
-        if(updatedUser !== null)
+        // if the DAO read responds with a player, change their status to '0'
+        if(user !== null)
         {
-            updatedUser.Password = null;
-            response.status(200);
-            response.send(updatedUser);
+            // set their playerType to 0, so a normal player
+            user.UserType = 0;
+            
+            // update the user in the DAO
+            let updatedUser = await dao.update(user);
+            
+            // if the update succeeds, respond with the updated user
+            if(updatedUser !== null)
+            {
+                updatedUser.Password = null;
+                response.status(200);
+                response.send(updatedUser);
+            }
+            else // else, respond with null
+            {
+                response.status(500);
+                response.send(null);
+            }
         }
-        else // else, respond with null
+        else // if reading the user fails, respond with 'null'
         {
-            response.status(500);
+            response.status(404);
             response.send(null);
         }
     }
-    else // if reading the user fails, respond with 'null'
+    else // user is not an admin, forbidden and send null
     {
-        response.status(404);
+        response.status(403);
         response.send(null);
     }
 }
-
-
-/*
-function to change a player's team. can be used to make their team 'unassigned'
-assumes the request body has
-    playerID - of player whose team is to be changed
-    teamName - of the new team that they will be a part of. can be changed to value of "unassigned" to make it so that they are not affiliated with a team
-responds with player information after the update
-NOTE - subsequent update MUST be made to the team roster on the frontend via the TeamController, as this file is not concerned with team-level happenings
-*/

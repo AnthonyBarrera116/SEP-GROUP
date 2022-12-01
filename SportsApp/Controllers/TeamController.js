@@ -102,34 +102,46 @@ exports.addPlayer = async function(request, response)
     let teamID = request.body.teamID;
     let playerToAdd = request.body.playerID;
     
-    // can change DAO to read by team name and possibly make more streamlined,
-    //    but that's a different matter
-    let fullTeam = await dao.read(teamID);
+    let loggedUser = request.sesson.user;
     
-    // if the team is found, add the new player
-    if( fullTeam !== null)
+    // only the coach for the team can add a player
+    if(loggedUser !== null && request.session.user.UserType === 1 && request.session.user.TeamID === teamID)
     {
-        // adds the new player to the ID
-        fullTeam.PlayerIDs.push(playerToAdd);
+        // can change DAO to read by team name and possibly make more streamlined,
+        //    but that's a different matter
+        let fullTeam = await dao.read(teamID);
         
-        // uses the DAO to update with the new player
-        let updatedTeam = await dao.update( fullTeam );
-        
-        // if the updatedTeam is not null, then respond with the updated team
-        if(updatedTeam !== null)
+        // if the team is found, add the new player
+        if( fullTeam !== null)
         {
-            response.status(200);
-            response.send(updatedTeam);
+            // adds the new player to the ID
+            fullTeam.PlayerIDs.push(playerToAdd);
+            
+            // uses the DAO to update with the new player
+            let updatedTeam = await dao.update( fullTeam );
+            
+            // if the updatedTeam is not null, then respond with the updated team
+            if(updatedTeam !== null)
+            {
+                response.status(200);
+                response.send(updatedTeam);
+            }
+            else // if the update fails, respond with null
+            {
+                response.status(500);
+                response.send(null);
+            }
         }
-        else // if the update fails, respond with null
+        else // if the team to add to cannot be found, return null
         {
-            response.status(500);
+            response.status(404);
             response.send(null);
         }
     }
-    else // if the team to add to cannot be found, return null
+    else
     {
-        response.status(404);
+        // person is not logged in as the coach for the team. unauthorized and send null
+        response.status(401);
         response.send(null);
     }
 }
@@ -147,50 +159,66 @@ exports.removePlayer = async function(request, response)
     let playerID = request.body.playerID;
     let teamID = request.body.teamID;
     
-    // read team information from DAO
-    let team = await dao.read(teamID);
+    // get the user from the session. this is just easier to check
+    let loggedUser = request.sesson.user;
     
-    // if read succeeds
-    if(team !== null)
+    // logged user can either be the player themself, the team's coach, or an admin
+    if(loggedUser !== null && // user is actually logged in
+      (loggedUser._id === playerID || // player removing themself from the team
+      (loggedUser.UserType === 1 && loggedUser.TeamID === teamID) || // coach removing player from team
+       loggedUser.UserType === 2)) // admin removing player from team
     {
-        // find and remove the player from the list of playerIDs
-        let i = 0;
-        let removeIndex = -1;
-        while ( i < team.PlayerIDs.length )
+        // read team information from DAO
+        let team = await dao.read(teamID);
+        
+        // if read succeeds
+        if(team !== null)
         {
-            // if we find the player to remove, we break out of the loop
-            if( team.PlayerIDs[i] === playerID )
+            // find and remove the player from the list of playerIDs
+            let i = 0;
+            let removeIndex = -1;
+            while ( i < team.PlayerIDs.length )
             {
-                removeIndex = i;
-                break;
+                // if we find the player to remove, we break out of the loop
+                if( team.PlayerIDs[i] === playerID )
+                {
+                    removeIndex = i;
+                    break;
+                }
+                i++;
             }
-            i++;
+            // if removeIndex is set properly. if the player is not found, then no change is made to the team
+            if( removeIndex >= 0 )
+            {
+                // splice the list, remove the player that the index is at. the '1' is saying how many elements to remove, which is just 1 in this case
+                team.PlayerIDs.splice(removeIndex, 1);
+            }  
+            
+            // update the DAO with the new list of playerIDs (with the player removed)
+            let returnedTeam = await dao.update(team);
+            
+            // respond with new team information after the update
+            if(returnedTeam !== null)
+            {
+                response.status(200);
+                response.send(team);
+            }
+            else // if the returned team is 'null', respond with 'null'
+            {
+                response.status(500);
+                response.send(null);
+            }
         }
-        // if removeIndex is set properly. if the player is not found, then no change is made to the team
-        if( removeIndex >= 0 )
-        {
-            // splice the list, remove the player that the index is at. the '1' is saying how many elements to remove, which is just 1 in this case
-            team.PlayerIDs.splice(removeIndex, 1);
-        }  
-        
-        // update the DAO with the new list of playerIDs (with the player removed)
-        let returnedTeam = await dao.update(team);
-        
-        // respond with new team information after the update
-        if(returnedTeam !== null)
-        {
-            response.status(200);
-            response.send(team);
-        }
-        else // if the returned team is 'null', respond with 'null'
-        {
-            response.status(500);
-            response.send(null);
-        }
+            else // if read fails, set status to 404 and return null
+            {
+                response.status(404);
+                response.send(null);
+            }
     }
-    else // if read fails, set status to 404 and return null
+    else
     {
-        response.status(404);
+        // person in session is not authorized
+        response.status(401);
         response.send(null);
     }
 }
@@ -206,34 +234,45 @@ exports.removeCoach = async function(request, response)
 {
     // get the teamID from the body
     let teamID = request.body.teamID;
+    let loggedUser = request.session.user;
     
-    // get the team information from the DAO
-    let team = await dao.read(teamID);
-    
-    // if reading the team is successful
-    if(team !== null)
+    if(loggedUser !== null && // user is logged in
+       loggedUser.UserType === 2) // user is an admin
     {
-        // set the coach to 'null'
-        team.CoachID = null;
         
-        // send the update to the DAO
-        let returnedTeam = await dao.update(team);
+        // get the team information from the DAO
+        let team = await dao.read(teamID);
         
-        // if the update succeeds, respond with updated team information. else, respond with null
-        if(returnedTeam !== null)
+        // if reading the team is successful
+        if(team !== null)
         {
-            response.status(200);
-            response.send(returnedTeam);
+            // set the coach to 'null'
+            team.CoachID = null;
+            
+            // send the update to the DAO
+            let returnedTeam = await dao.update(team);
+            
+            // if the update succeeds, respond with updated team information. else, respond with null
+            if(returnedTeam !== null)
+            {
+                response.status(200);
+                response.send(returnedTeam);
+            }
+            else // if the update fails, respond with null
+            {
+                response.status(500);
+                response.send(null);
+            }
         }
-        else // if the update fails, respond with null
+        else // if reading the team fails, respond with null
         {
-            response.status(500);
+            response.status(404);
             response.send(null);
         }
     }
-    else // if reading the team fails, respond with null
+    else
     {
-        response.status(404);
+        response.status(401);
         response.send(null);
     }
 }
@@ -252,32 +291,43 @@ exports.makeCoach = async function(request, response)
     let teamID = request.body.teamID;
     let playerID = request.body.playerID;
     
-    // get the team information from the DAO
-    let team = await dao.read(teamID);
+    let loggedUser = request.session.user;
     
-    if(team !== null) // reading the team succeeds, update the coachID
+    if(loggedUser !== null && // user is logged in
+       loggedUser.UserType === 2) // user is an admin
     {
-        // update the Coach information
-        team.CoachID = playerID;
+        // get the team information from the DAO
+        let team = await dao.read(teamID);
         
-        // send the update to the DAO
-        let returnedTeam = await dao.update(team);
-        
-        // if the update succeeds, return updated team information
-        if( returnedTeam !== null )
+        if(team !== null) // reading the team succeeds, update the coachID
         {
-            response.status(200);
-            response.send(returnedTeam);
+            // update the Coach information
+            team.CoachID = playerID;
+            
+            // send the update to the DAO
+            let returnedTeam = await dao.update(team);
+            
+            // if the update succeeds, return updated team information
+            if( returnedTeam !== null )
+            {
+                response.status(200);
+                response.send(returnedTeam);
+            }
+            else // else return null
+            {
+                response.status(500);
+                response.send(null);
+            }
         }
-        else // else return null
+        else // if reading the team fails, send 'null'
         {
-            response.status(500);
+            response.status(404);
             response.send(null);
         }
     }
-    else // if reading the team fails, send 'null'
+    else
     {
-        response.status(404);
+        response.status(401);
         response.send(null);
     }
 }
@@ -290,18 +340,29 @@ exports.updateTeam = async function(request, response)
 {
     // get the team from the request
     let team = request.body.team;
+    let loggedUser = request.session.user;
     
-    // use the DAO update function to update the team information
-    let returnedTeam = await dao.update(team);
-    
-    if(returnedTeam !== null)
+    if(loggedUser !== null &&
+       loggedUser.UserType === 2)
     {
-        response.status(200);
-        response.send(returnedTeam)
+        
+        // use the DAO update function to update the team information
+        let returnedTeam = await dao.update(team);
+        
+        if(returnedTeam !== null)
+        {
+            response.status(200);
+            response.send(returnedTeam)
+        }
+        else
+        {
+            response.status(404);
+            response.send(null);
+        }
     }
     else
     {
-        response.status(404);
+        response.status(401);
         response.send(null);
     }
 }

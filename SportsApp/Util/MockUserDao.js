@@ -4,7 +4,7 @@ exports.create = async function(user)
     // creating a user object that already exists
     let existingUser = 
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:"fredsPW",
         UserType:0,
@@ -28,7 +28,7 @@ exports.readByUsername = async function(username)
     // creating a user object that already exists
     let existingUser = 
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:"fredsPW",
         UserType:0,
@@ -52,7 +52,7 @@ exports.readById = async function(id)
     // creating a user object that already exists
     let existingUser = 
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:"fredsPW",
         UserType:0,
@@ -63,7 +63,7 @@ exports.readById = async function(id)
     // creating a coach object to remove their status
     let badCoach =
     {
-        _id:1,
+        _id:"def",
         UserName:"badcoach",
         Password:"badcoachPW",
         UserType:1,
@@ -91,7 +91,7 @@ exports.update = async function(user)
     // creating a user object that already exists
     let existingUser = 
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:"fredsPW",
         UserType:0,
@@ -102,7 +102,7 @@ exports.update = async function(user)
     // creating a coach object to remove their status
     let badCoach =
     {
-        _id:1,
+        _id:"def",
         UserName:"badcoach",
         Password:"badcoachPW",
         UserType:1,
@@ -133,7 +133,7 @@ exports.del = async function(id)
     // creating a user object that already exists
     let existingUser = 
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:"fredsPW",
         UserType:0,
