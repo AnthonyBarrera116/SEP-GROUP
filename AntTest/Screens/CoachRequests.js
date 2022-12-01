@@ -53,22 +53,95 @@ const styles = StyleSheet.create({
 
 export default function EditPlayer({navigation}){
 
+  [username, setNameInput] = React.useState("");
+  [newName, setNewNameInput] = React.useState("");
+  [userTy, setTypeInput] = React.useState("");
+  [teamIn, setTeamInput] = React.useState("");
+  [idIn, setIdInput] = React.useState("");
+  [userGet, grabUser] = React.useState([]);
+  var playerUser;
+  // axios import
   const axios = require('axios');
 
 
+  function handleSubmit(){
+
+      axios.get("http://localhost:4000/user/" + username)
+      .then(response => {
+          
+        playerUser = response.data;
+          
+      })
+      
+      .catch((error) => 
+      {
+
+          console.log(error);
+
+      });
+
+    
+    setTimeout(() => { 
+
+      
+      if(userTy === ""){
+
+
+        userTy = playerUser.UserType
+
+      }
+
+      if(teamIn === ""){
+
+        teamIn =  playerUser.TeamID
+
+      }
+
+      if(idIn === ""){
+
+        idIn = playerUser._id
+
+      }
+
+
+      profile = {
+
+        _id: idIn,
+        UserName:username,
+        Email:playerUser.Email,
+        UserType: userTy,
+        TeamID:teamIn,
+        Likes: user.Likes
+
+      }
+
+      
+      axios.post("http://localhost:4000/updateUser", profile)
+          .then((response) => console.log( JSON.stringify( response.data ) ))
+          .catch((error) => 
+          {
+              console.log(error);
+          });
+
+        alert( JSON.stringify(profile) );
+
+
+    }, 500);
+
+    navigation.pop()
+
+  }
 
   [players,setPlayers] = React.useState([]);
 
       // use a POST request with Axios. we're posting the user's information to the server
-      
-    console.log("FIUYGASDFUIYGADSYIFGIYSDGFYIK")
-    useEffect(() => {
-        axios.get("http://localhost:4000/getallreq")
+      useEffect(() => {
+        axios.get("http://localhost:4000/allUsers")
             
           .then((response) =>  
             
             // sets UserGet to info response
-            console.log(response.data)
+            setPlayers(response.data)
           )
   
           // For error
@@ -76,11 +149,11 @@ export default function EditPlayer({navigation}){
           {
             console.log(error);
           });
-    },[])
+      },[])
 
 
     
-    return(<>
+      return(<>
 
         <ScrollView style = {{marginVertical:30,marginBottom:-40,marginTop:5}}>
               
@@ -110,5 +183,42 @@ export default function EditPlayer({navigation}){
           </ScrollView>
 
           
+          <View style = {{marginBottom:10}}>
+
+            <View style={FormStyle.groupView}>
+
+              <Text style={FormStyle.label}>UserName:</Text>
+                
+              <TextInput onChangeText={setNameInput} style={FormStyle.input} autoCapitalize={false} />
+
+              <Text style={FormStyle.label}>NEWUserName:</Text>
+                
+                <TextInput onChangeText={setNewNameInput} style={FormStyle.input} autoCapitalize={false} />
+
+              <Text style={FormStyle.label}>UserType:</Text>
+
+              <TextInput onChangeText={setTypeInput} style={FormStyle.input} secureTextEntry={false} />
+              
+              <Text style={FormStyle.label}>Team:</Text>
+
+              <TextInput onChangeText={setTeamInput} style={FormStyle.input} secureTextEntry={false} />
+
+              <Text style={FormStyle.label}>_id:</Text>
+
+              <TextInput onChangeText={setIdInput} style={FormStyle.input} secureTextEntry={false} />
+
+
+              <TouchableOpacity style={FormStyle.formButton} onPress={()=> handleSubmit()}>
+
+              <Text style={FormStyle.formButtonText}> Submit </Text>
+
+              </TouchableOpacity>
+
+
+            </View>
+
+          </View>
+          
+
     </>)
 }

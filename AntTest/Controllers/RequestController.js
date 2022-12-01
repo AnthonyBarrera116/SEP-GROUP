@@ -47,6 +47,8 @@ exports.createReq = async function(request, response)
 exports.getAllReq = async function(request, response){
     // get the user information
     let allReq = await dao.readAll();
+
+    console.log("dfsssssssssssssss")
     
     // if the user isn't null from the DAO
     if (allReq !== null){
