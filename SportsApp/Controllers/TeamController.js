@@ -102,10 +102,10 @@ exports.addPlayer = async function(request, response)
     let teamID = request.body.teamID;
     let playerToAdd = request.body.playerID;
     
-    let loggedUser = request.sesson.user;
+    let loggedUser = request.session.user;
     
     // only the coach for the team can add a player
-    if(loggedUser !== null && request.session.user.UserType === 1 && request.session.user.TeamID === teamID)
+    if(loggedUser !== null && loggedUser.UserType === 1 && loggedUser.TeamID === teamID)
     {
         // can change DAO to read by team name and possibly make more streamlined,
         //    but that's a different matter
@@ -160,7 +160,7 @@ exports.removePlayer = async function(request, response)
     let teamID = request.body.teamID;
     
     // get the user from the session. this is just easier to check
-    let loggedUser = request.sesson.user;
+    let loggedUser = request.session.user;
     
     // logged user can either be the player themself, the team's coach, or an admin
     if(loggedUser !== null && // user is actually logged in

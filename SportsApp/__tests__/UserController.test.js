@@ -2,6 +2,35 @@ const userController = require('../Controllers/UserController');
 const conIntercept = require('../Util/ControllerInterceptor');
 const mockDao = require('../Util/MockUserDao');
 
+// creating example users for Session functions
+const normalUser = 
+{
+    _id:"abc",
+    UserName:"normal",
+    Password:null,
+    UserType:0,
+    TeamID:"unassigned",
+    Likes:[]
+}
+const coachUser = 
+{
+    _id:"def",
+    UserName:"coach",
+    Password:null,
+    UserType:1,
+    TeamID:"unassigned",
+    Likes:[]
+}
+const adminUser = 
+{
+    _id:"ghi",
+    UserName:"admin",
+    Password:null,
+    UserType:2,
+    TeamID:"unassigned",
+    Likes:[]
+}
+
 
 // set the DAO to the mock DAO
 beforeAll(function()
@@ -25,7 +54,7 @@ test('Login With Existing User, Correct Credentials', async function()
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(
     {
-        _id: 0,
+        _id: "abc",
         UserName:"fred",
         Password: null,
         UserType:0,
@@ -131,7 +160,7 @@ test('Read Information for an Existing User', async function()
         UserType:0,
         TeamID:"unassigned",
         Likes:[],
-        _id:0
+        _id:"abc"
     });
 });
 
@@ -152,19 +181,21 @@ test('Read Information for a Non-Existing User', async function()
 });
 
 // updating an existing user's information
-test('Updating an Existing User', async function()
+test('Updating an Existing User as an admin', async function()
 {
     // setting up request
     let req = conIntercept.mockRequest();
     req.body =
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:"fredsOtherPW",
         UserType:1,
         TeamID:"previouslyUnassigned",
         Likes:[]
     };
+    req.session.user = adminUser;
+    
     // setting up response
     let res = conIntercept.mockResponse();
     
@@ -173,7 +204,7 @@ test('Updating an Existing User', async function()
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         UserType:1,
         TeamID:"previouslyUnassigned",
@@ -181,19 +212,78 @@ test('Updating an Existing User', async function()
     });
 });
 
+// updating an existing user's information
+test('Updating an Existing User as the same user', async function()
+{
+    // setting up request
+    let req = conIntercept.mockRequest();
+    req.body =
+    {
+        _id:"abc",
+        UserName:"fred",
+        Password:"fredsOtherPW",
+        UserType:1,
+        TeamID:"previouslyUnassigned",
+        Likes:[]
+    };
+    req.session.user = normalUser;
+    
+    // setting up response
+    let res = conIntercept.mockResponse();
+    
+    await userController.updateUser(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith(
+    {
+        _id:"abc",
+        UserName:"fred",
+        UserType:1,
+        TeamID:"previouslyUnassigned",
+        Likes:[]
+    });
+});
+
+
+test('Updating an Existing User as a different user', async function()
+{
+    // setting up request
+    let req = conIntercept.mockRequest();
+    req.body =
+    {
+        _id:"abc",
+        UserName:"fred",
+        Password:"fredsOtherPW",
+        UserType:1,
+        TeamID:"previouslyUnassigned",
+        Likes:[]
+    };
+    req.session.user = coachUser;
+    
+    // setting up response
+    let res = conIntercept.mockResponse();
+    
+    await userController.updateUser(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.send).toHaveBeenCalledWith(null);
+});
+
 // trying to update a non-existent user
-test('Updating a Non-Existing User', async function()
+test('Updating a Non-Existing User as an admin', async function()
 {
     let req = conIntercept.mockRequest();
     req.body =
     {
-        _id:0,
+        _id:"abc",
         UserName:"jacob",
         Password:"jacobsPW",
         UserType:0,
         TeamID:"unassigned",
         Likes:[]
     };
+    req.session.user = adminUser;
+    
     // setting up response
     let res = conIntercept.mockResponse();
     
@@ -204,19 +294,20 @@ test('Updating a Non-Existing User', async function()
 });
 
 // deleting a user with the correct ID
-test('Deleting an Existing User', async function()
+test('Deleting an Existing User as an admin', async function()
 {
     let req = conIntercept.mockRequest();
-    req.body._id = 0;
+    req.body._id = "abc";
     // setting up response
     let res = conIntercept.mockResponse();
+    req.session.user = adminUser;
     
     await userController.delUser(req, res);
     
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:"fredsPW",
         UserType:0,
@@ -226,10 +317,12 @@ test('Deleting an Existing User', async function()
 });
 
 // deleting a user with a non-existent ID
-test('Deleting Using an Invalid ID', async function()
+test('Deleting Using an Invalid ID as an admin', async function()
 {
     let req = conIntercept.mockRequest();
     req.body._id = 30;
+    req.session.user = adminUser;
+    
     // setting up response
     let res = conIntercept.mockResponse();
     
@@ -246,14 +339,14 @@ test('Read Information for an Existing User via ID', async function()
     let res = conIntercept.mockResponse();
     
     // setting up request
-    req.params.id = 0;
+    req.params.id = "abc";
     
     await userController.getIDInfo(req, res);
     
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(
     {
-                _id:0,
+                _id:"abc",
         UserName:"fred",
         Password:null,
         UserType:0,
@@ -283,7 +376,7 @@ test('Getting a logged in user\'s information', async function()
     
     req.session.user = 
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:"fredsPW",
         UserType:0,
@@ -296,7 +389,7 @@ test('Getting a logged in user\'s information', async function()
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:"fredsPW",
         UserType:0,
@@ -318,20 +411,21 @@ test('Getting a logged in user\'s information when they are not logged in', asyn
     expect(res.send).toHaveBeenCalledWith(null);
 });
 
-test('Making a non-coach a coach', async function()
+test('Making a non-coach a coach as an admin', async function()
 {
     let req = conIntercept.mockRequest();
     let res = conIntercept.mockResponse();
     
-    req.body.PlayerID = 0;
+    req.body.PlayerID = "abc";
     req.body.TeamID = "newteam";
+    req.session.user = adminUser;
     
     await userController.makeCoach(req, res);
     
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:null,
         UserType:1,
@@ -340,13 +434,14 @@ test('Making a non-coach a coach', async function()
     });
 });
 
-test('Making a non-existing player a coach', async function()
+test('Making a non-existing player a coach as an admin', async function()
 {
     let req = conIntercept.mockRequest();
     let res = conIntercept.mockResponse();
     
     req.body.PlayerID = 5;
     req.body.TeamID = "newteam";
+    req.session.user = adminUser;
     
     await userController.makeCoach(req, res);
     
@@ -354,25 +449,56 @@ test('Making a non-existing player a coach', async function()
     expect(res.send).toHaveBeenCalledWith(null);
 });
 
-test('Removing coach status from an existing player', async function()
+test('Making a non-coach a coach as a non-admin', async function()
 {
     let req = conIntercept.mockRequest();
     let res = conIntercept.mockResponse();
     
-    req.body.PlayerID = 1;
+    req.body.PlayerID = "abc";
+    req.body.TeamID = "newteam";
+    req.session.user = normalUser;
+    
+    await userController.makeCoach(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.send).toHaveBeenCalledWith(null);
+});
+
+
+test('Removing coach status from an existing player as an admin', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.body.PlayerID = "def";
+    req.session.user = adminUser;
     
     await userController.removeCoach(req, res);
     
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith(
     {
-        _id:1,
+        _id:"def",
         UserName:"badcoach",
         Password:null,
         UserType:0,
         TeamID:"badteam",
         Likes:[]
     });
+});
+
+test('Removing coach status from an existing player as a non-admin', async function()
+{
+    let req = conIntercept.mockRequest();
+    let res = conIntercept.mockResponse();
+    
+    req.body.PlayerID = "def";
+    req.session.user = normalUser;
+    
+    await userController.removeCoach(req, res);
+    
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.send).toHaveBeenCalledWith(null);
 });
 
 test('Logging a logged-in user out', async function()
@@ -382,7 +508,7 @@ test('Logging a logged-in user out', async function()
     
     req.session.user = 
     {
-        _id:0,
+        _id:"abc",
         UserName:"fred",
         Password:null,
         UserType:0,
