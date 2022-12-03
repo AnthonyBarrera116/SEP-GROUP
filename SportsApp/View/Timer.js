@@ -3,34 +3,47 @@
 import React, {Component} from "react";
 import { Text, View, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
 
+global.timerStopped = true;
+global.timerFinished = false;
+const COUNTDOWN_TIME = 900; //15 minutes in seconds (one football quarter is 15 minutes)
 export default class Timer extends React.Component
 {
     constructor(props){
         super(props);
         this.state={
-            count: 900 //15 minutes in seconds (one football quarter is 15 minutes)
+            count: COUNTDOWN_TIME
         }
     }
     startTimer(){
         //Alert.alert('Timer Started');
-        this.timer = setInterval(()=>{
-            let {count} = this.state;
-            this.setState({
-                count: count - 1
-            });
-        }, 1000);
+        if (global.timerStopped === true)
+        {
+            global.timerStopped = false;
+            this.timer = setInterval(()=>{
+                let {count} = this.state;
+                this.setState({
+                    count: count - 1
+                });
+            }, 1000);
+        }
     }
-    fmtMSS(s){
+    stopTimer()
+    {
+        if(global.timerFinished === false)
+        {
+            global.timerStopped = true;
+            clearInterval(this.timer);
+        }
+    }
+    fmtMSS(s){// Format minute:second second
         return (s-(s%=60))/60+(9<s?':':':0')+s;
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot){
-        if(prevState.count !== this.state.count && this.state.count === 0){ //Checks for when timer reaches zero
-            clearInterval(this.timer)
-            if(this.props.onTimesup){
-                console.log("Timer done!");
-                //this.props.onTimesup;
-            }
+    componentDidUpdate(prevProps, prevState, snapshot){ //Checks for when timer reaches zero and stops it
+        if(prevState.count !== this.state.count && this.state.count === 0){
+            global.timerFinished = true;
+            global.timerStopped = false;
+            clearInterval(this.timer);
         }
     }
     render() {
@@ -49,7 +62,7 @@ export default class Timer extends React.Component
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.stopButtonContainer}
-                        onPress={()=> clearInterval(this.timer)}>
+                        onPress={()=> this.stopTimer()}>
                         <Text style={styles.buttonText}>
                             Pause the clock
                         </Text>
