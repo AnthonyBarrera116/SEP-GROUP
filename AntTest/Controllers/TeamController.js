@@ -28,7 +28,6 @@ exports.createTeam = async function(request, response)
         CoachID: teamCoach,
         W: 0,
         L: 0,
-        pts: 0,
     };
     
     let returnedTeam = await dao.create(newTeam);

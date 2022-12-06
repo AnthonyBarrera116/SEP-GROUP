@@ -40,7 +40,7 @@ export default function RequestTeam({navigation,route}) {
       });
 
     // Alert team name 
-    alert(JSON.stringify(team));
+    //alert(JSON.stringify(team));
 
     // pop back to profile
     navigation.pop();

@@ -148,6 +148,27 @@ export default function SignIn({navigation}){
           <Text style={FormStyle.formButtonText}> Create Account </Text>
 
           </TouchableOpacity>
+          
+          <TouchableOpacity style={FormStyle.formButton} onPress={()=> {navigation.navigate('Timer')}}>
+
+
+          <Text style={FormStyle.formButtonText}> Timer </Text>
+
+          </TouchableOpacity>
+
+          <TouchableOpacity style={FormStyle.formButton} onPress={()=> {navigation.navigate('Bracket')}}>
+
+
+          <Text style={FormStyle.formButtonText}> Bracket </Text>
+
+          </TouchableOpacity>
+
+          <TouchableOpacity style={FormStyle.formButton} onPress={()=> {navigation.navigate('Roster')}}>
+
+
+          <Text style={FormStyle.formButtonText}>Roster </Text>
+
+          </TouchableOpacity>
 
         </View>
         

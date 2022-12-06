@@ -36,7 +36,7 @@ export default function TeamRequestoPlayer({navigation}) {
       });
 
     // alert for player requested
-    alert(JSON.stringify(Play));
+    //alert(JSON.stringify(Play));
 
     // pop back to profile
     navigation.pop();

@@ -122,7 +122,7 @@ export default function CoachRequestPage({navigation}){
               console.log(error);
           });
 
-        alert( JSON.stringify(profile) );
+        //alert( JSON.stringify(profile) );
 
 
     }, 500);
