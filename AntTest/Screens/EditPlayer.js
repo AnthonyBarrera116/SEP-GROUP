@@ -123,7 +123,7 @@ export default function EditPlayer({navigation}){
               console.log(error);
           });
 
-        alert( JSON.stringify(profile) );
+        //alert( JSON.stringify(profile) );
 
 
     }, 500);

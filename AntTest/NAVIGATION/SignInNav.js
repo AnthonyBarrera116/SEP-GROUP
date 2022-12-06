@@ -19,6 +19,9 @@ import CreateAccount from '../Screens/AccountCreateScreen';
 import SignIn from '../Screens/SignIn';
 import Admin from '../Screens/AdminProfile';
 import EditPlayer from '../Screens/EditPlayer'
+import Roster from '../Screens/Roster';
+import Bracket from '../Screens/Bracket';
+import Time from '../Timer';
 
 import CoachRe from '../Screens/CoachRequests'
 // Creates Stack Navigator
@@ -85,6 +88,9 @@ export default function SignInNav() {
           <Stack.Screen name="TeamRequestoPlayer" component={TeamRequestoPlayer} />
           <Stack.Screen name="RequestTeam" component={RequestTeam} />
           <Stack.Screen name="RequatCoach" component={requestToCoach} />
+          <Stack.Screen name="Roster" component={Roster} />
+          <Stack.Screen name="Timer" component={Time} />
+          <Stack.Screen name="Bracket" component={Bracket} />
 
           
         </Stack.Navigator>

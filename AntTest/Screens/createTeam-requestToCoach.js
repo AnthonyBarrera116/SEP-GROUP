@@ -40,10 +40,10 @@ export default function RequestCoach({navigation,route}) {
       });
 
     // Alert team name 
-    alert(JSON.stringify(team));
+    //alert(JSON.stringify(team));
 
     // alert team name and reason
-    alert(JSON.stringify(team));
+    //alert(JSON.stringify(team));
     
     // pop back after request
     navigation.pop()
