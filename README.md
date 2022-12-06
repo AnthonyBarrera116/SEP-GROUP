@@ -37,3 +37,6 @@ https://docs.google.com/document/d/18QFX1TLIE4XiUW74kzq3oaQOij7MLtxtvEqfOoH790k/
 ![image](https://user-images.githubusercontent.com/55001338/194398792-7c072bcd-f76b-4419-8337-5a8b778ded99.png)
 
 ![project_package_diagram](https://user-images.githubusercontent.com/55001338/200940378-731557be-7010-47c9-aed4-140b0854cb97.png)
+
+## Live Scores Activity Diagram:
+![Lives Scores Diagram](https://user-images.githubusercontent.com/59944827/206043611-43761c03-e22e-454d-bd0a-fe7a52e0e66c.png)
